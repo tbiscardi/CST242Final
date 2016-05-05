@@ -1,0 +1,15 @@
+Thomas,Biscardi,tbiscardi,password,1234,ComputerScience
+MAT141 A,CST111 B+,CST112 A,CST141 A
+MAT142,CST222,CST246
+MAT142 W
+MAT126 B
+John,Doe,jdoe,jdoe,5678,Mathematics
+MAT111 B+,MAT126 C
+MAT141
+MAT141 F
+CST111 B+
+Donald,Trump,dtrump,uglyduckling,6666,ComputerScience
+MAT141 D,CST111 C,CST112 C
+CST141,MAT142 
+MAT142 F,MAT205 W,CST141 F
+MAT126 D+
