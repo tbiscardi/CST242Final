@@ -5,7 +5,8 @@ import java.util.ArrayList;
 
 public class MajorBag implements Serializable{
 	
-	ArrayList<Major> majors;
+	private ArrayList<Major> majors;
+	
 	
 	public MajorBag() {
 		majors = new ArrayList<>();

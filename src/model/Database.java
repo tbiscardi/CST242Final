@@ -30,13 +30,29 @@ public class Database {
 		FacultyBag fb = new FacultyBag();
 		AdminBag ab = new AdminBag();
 		try {
+			CourseBag cb;
+			fr3 = new File(fileName3);
+			Scanner input3 = new Scanner(fr3);
+			String[] str3;
+			while (input3.hasNextLine()) {
+				String name = input3.nextLine();
+				str3 = input3.nextLine().split(",");
+				cb = null;
+				cb = new CourseBag();
+				for (int i = 0; i < str3.length; i++) {
+					cb.add(new Course(str3[i], ""));
+				}
+				Major newMajor = new Major(name, cb);
+				majors.add(newMajor);
+			}
 			fr1 = new File(fileName1);
 			Scanner input1 = new Scanner(fr1);
 			String[] str;
-			CourseBag cb;
+			
 			while (input1.hasNextLine()) {
 				str = input1.nextLine().split(",");
 				Student s1 = new Student(str[0], str[1], str[2], str[3], str[4]);
+				s1.setMajor(majors.get(str[5]));
 				str = input1.nextLine().split(",");
 				cb = new CourseBag();
 				for (int i = 0; i < str.length; i++) {
@@ -45,6 +61,7 @@ public class Database {
 
 				}
 				s1.setTaken(cb);
+				
 				cb = null;
 				cb = new CourseBag();
 				str = input1.nextLine().split(",");
@@ -72,33 +89,21 @@ public class Database {
 				s1.setOther(cb);
 				sb.add(s1);
 			}
-
 			fr2 = new File(fileName2);
 			Scanner input2 = new Scanner(fr2);
 			input2.nextLine();
 			String[] str2;
-			while (input1.hasNextLine()) {
+			while (input2.hasNextLine()) {
 				str2 = input2.nextLine().split(" ");
 				if (str2[4].equals(1)) {
-					fb.add(new Faculty(str2[0], str2[1], str2[2], str2[3]));
+					Faculty f1 = new Faculty(str2[0], str2[1], str2[2], str2[3]);
+					f1.setType(1);
+					fb.add(f1);
 				} else {
-					ab.add(new Admin(str2[0], str2[1], str2[2], str2[3]));
+					Admin a1 = new Admin(str2[0], str2[1], str2[2], str2[3]);
+					a1.setType(2);
+					ab.add(a1);
 				}
-			}
-
-			fr3 = new File(fileName3);
-			Scanner input3 = new Scanner(fr3);
-			String[] str3;
-			while (input3.hasNextLine()) {
-				String name = input3.nextLine();
-				str3 = input3.nextLine().split(",");
-				cb = null;
-				cb = new CourseBag();
-				for (int i = 0; i < str3.length; i++) {
-					cb.add(new Course(str3[i], ""));
-				}
-				Major newMajor = new Major(name, cb);
-				majors.add(newMajor);
 			}
 
 			input1.close();
@@ -118,8 +123,8 @@ public class Database {
 		try {
 			fos = new FileOutputStream("Data.dat");
 			oos = new ObjectOutputStream(fos);
-			oos.writeObject(persons);
 			oos.writeObject(majors);
+			oos.writeObject(persons);
 			oos.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -135,8 +140,8 @@ public class Database {
 		try {
 			fis = new FileInputStream("Data.dat");
 			ois = new ObjectInputStream(fis);
-			persons = (PersonBag) ois.readObject();
 			majors = (MajorBag) ois.readObject();
+			persons = (PersonBag) ois.readObject();
 			ois.close();
 		} catch (FileNotFoundException e) {
 			readTextFiles();
@@ -144,6 +149,9 @@ public class Database {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
+			readTextFiles();
+			saveData();
+		} catch (Exception e) {
 			readTextFiles();
 			saveData();
 		}

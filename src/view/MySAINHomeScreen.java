@@ -1,8 +1,11 @@
 package view;
 
+import handling.GlobalVariables;
+import handling.GlobalVariables.Events;
+
 import java.util.ArrayList;
 
-import handling.GlobalVariables;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -16,12 +19,28 @@ public class MySAINHomeScreen extends View{
 		VBox vb = (VBox) getRoot();
 		vb.setStyle("-fx-alignment: center center");
 		
-		Image logo = new Image(getClass().getResourceAsStream("sccclog.gif"));
-		ImageView logoImg = new ImageView(logo);
-		logoImg.fitWidthProperty().bind(stage.widthProperty());
-		logoImg.setPreserveRatio(true);
+//		Image logo = new Image(getClass().getResourceAsStream("sccclog.gif"));
+//		ImageView logoImg = new ImageView(logo);
+//		logoImg.fitWidthProperty().bind(stage.widthProperty());
+//		logoImg.setPreserveRatio(true);
 		
-		//SAIN button and WHAT-IF button
+		Button sainButton = new Button("SAIN Report");
+		Button whatifButton = new Button("What-If Analysis");
+		
+		sainButton.setOnAction(e -> {
+			NotifyObserver(Events.SAIN_REPORT_BUTTON);
+		});
+		
+		whatifButton.setOnAction(e -> {
+			NotifyObserver(Events.WHAT_IF_BUTTON);
+		});
+		
+		vb.getChildren().addAll(/*logoImg, */sainButton, whatifButton);
+		
+		stage.setScene(this);
+		stage.setResizable(false);
+		stage.setTitle("MySCCC Home Page");
+		stage.show();
 	}
 	
 }

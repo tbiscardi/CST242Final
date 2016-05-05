@@ -46,13 +46,11 @@ public class LoginScreenView extends View {
 	
 	public String getUsername(){
 		String usernameS = unField.getText();
-		unField.clear();
 		return usernameS;
 	}
 	
 	public String getPassword(){
 		String passwordS = pwField.getText();
-		pwField.clear();
 		return passwordS;
 	}
 

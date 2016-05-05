@@ -4,10 +4,14 @@ import handling.GlobalVariables.Events;
 import handling.Observer;
 import view.LoginScreenView;
 import view.MainView;
+import view.MySAINHomeScreen;
+import view.SAINReportEditable;
+import view.SAINReportUneditable;
 import view.View;
 import model.Database;
 import model.Person;
 import model.PersonBag;
+import model.Student;
 
 public class Controller implements Observer{
 	
@@ -41,16 +45,36 @@ public class Controller implements Observer{
 						view = new LoginScreenView(view.getStage());
 					}
 					else {
-						view = new MySAINHomeScreen(view.getStage()); //create this view class
+						view = new MySAINHomeScreen(view.getStage());
 					}
 				} else {
-					view = new MySAINHomeScreen(view.getStage()); //create this view class
+					view = new MySAINHomeScreen(view.getStage());
 				}
 			} else {
-				view = new MySAINHomeScreen(view.getStage()); //create this view class
+				view = new MySAINHomeScreen(view.getStage());
 			}
+			view.addObserver(this);
 			break;
 		case SAIN_REPORT_BUTTON:
+			switch (p.getType()) {
+			case 0:
+				view = new SAINReportUneditable(view.getStage());
+				((SAINReportUneditable)view).setName(p.getfName() + " " + p.getlName());
+				((SAINReportUneditable)view).setId(((Student)p).getId());
+				((SAINReportUneditable)view).setGpa(((Student)p).calculateGPA());
+				((SAINReportUneditable)view).setMajor(((Student)p).getMajor().getName());
+				
+				break;
+			case 1:
+				view = new SAINReportUneditable(view.getStage());
+				break;
+			case 2:
+//				view = new SAINReportEditable(view.getStage());
+				break;
+			default:
+				view = new LoginScreenView(view.getStage());
+				break;
+			}
 			break;
 		case WHAT_IF_BUTTON:
 			break;

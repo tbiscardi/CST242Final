@@ -23,7 +23,7 @@ public class View extends Scene implements Subject{
 	protected void init(){
 		if(first){
 			stage.setResizable(false);
-			stage.setTitle("MVC Example");
+			stage.setTitle("Suffolk County Commumity College");
 			stage.show();
 			first = false;
 		}

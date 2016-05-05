@@ -19,7 +19,6 @@ public class MainView extends View{
 		super(stage, new VBox(10), GlobalVariables.width, GlobalVariables.height);
 		obsArr = new ArrayList<>();
 		LoginScreenView loginView = new LoginScreenView(stage);
-		
 	}
 	
 	public String getUsername(){
