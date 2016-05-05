@@ -66,7 +66,7 @@ public class Database {
 				cb = new CourseBag();
 				str = input1.nextLine().split(",");
 				for (int i = 0; i < str.length; i++) {
-					cb.add(new Course(str[i], ""));
+					cb.add(new Course(str[i], "IP"));
 				}
 				s1.setTaking(cb);
 				cb = null;
@@ -87,6 +87,7 @@ public class Database {
 
 				}
 				s1.setOther(cb);
+				s1.fillCoursesNeeded();
 				sb.add(s1);
 			}
 			fr2 = new File(fileName2);

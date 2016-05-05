@@ -32,6 +32,9 @@ public class LoginScreenView extends View {
 		unField.setMaxWidth(200);
 		pwField.setMaxWidth(200);
 
+		
+		login.setDefaultButton(true);
+		
 		login.setOnAction(e -> {
 			NotifyObserver(Events.LOG_IN_BUTTON);
 		});

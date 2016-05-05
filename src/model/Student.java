@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 public class Student extends Person implements Serializable{
 
@@ -13,10 +14,12 @@ public class Student extends Person implements Serializable{
 	private CourseBag failed;
 	private CourseBag other;
 	private double credits;
+	private DecimalFormat df = new DecimalFormat("#.##");
 
 	public Student() {
 		super();
 		setType(0);
+		
 	}
 
 	public Student(String fName, String lName, String username, String password, String id) {
@@ -33,7 +36,7 @@ public class Student extends Person implements Serializable{
 		this.gpa = gpa;
 	}
 	
-	public double calculateGPA(){
+	public String calculateGPA(){
 		double avg = 0.0;
 		double size = taken.size() + other.size() + failed.size();
 		for(int i = 0; i < taken.size(); i ++) {
@@ -65,7 +68,7 @@ public class Student extends Person implements Serializable{
 		}
 		
 		for(int i = 0; i < other.size(); i ++) {
-			switch (taken.get(i).getGrade()) {
+			switch (other.get(i).getGrade()) {
 			case "A":
 				avg += 4.0;
 				break;
@@ -91,7 +94,8 @@ public class Student extends Person implements Serializable{
 				break;
 			}
 		}
-		return avg / size;
+		double calcGpa = avg / size;
+		return df.format(calcGpa);
 	}
 
 	public String getId() {
@@ -156,6 +160,20 @@ public class Student extends Person implements Serializable{
 
 	public void setCredits(double credits) {
 		this.credits = credits;
+	}
+	
+	public void fillCoursesNeeded() {
+		needed = this.major.getNeeded();
+		for(int i = 0; i < needed.size(); i ++) {
+			String name = needed.get(i).getName();
+			if(taken.containsByName(name) || taking.containsByName(name) || other.containsByName(name)) {
+				needed.remove(needed.get(i));
+				i--;
+				System.out.println();
+			} else {
+				
+			}
+		}
 	}
 
 }

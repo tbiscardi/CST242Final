@@ -2,16 +2,17 @@ package controller;
 
 import handling.GlobalVariables.Events;
 import handling.Observer;
-import view.LoginScreenView;
-import view.MainView;
-import view.MySAINHomeScreen;
-import view.SAINReportEditable;
-import view.SAINReportUneditable;
-import view.View;
+
+import java.util.ArrayList;
+
+import model.Course;
 import model.Database;
 import model.Person;
-import model.PersonBag;
 import model.Student;
+import view.LoginScreenView;
+import view.MySAINHomeScreen;
+import view.SAINReportUneditable;
+import view.View;
 
 public class Controller implements Observer{
 	
@@ -63,9 +64,43 @@ public class Controller implements Observer{
 				((SAINReportUneditable)view).setId(((Student)p).getId());
 				((SAINReportUneditable)view).setGpa(((Student)p).calculateGPA());
 				((SAINReportUneditable)view).setMajor(((Student)p).getMajor().getName());
+				ArrayList<String> tempCourses = new ArrayList<>();
+				for(int i = 0; i < ((Student)p).getTaken().size(); i ++) {
+					tempCourses.add(((Student)p).getTaken().get(i).getName() + "\t" + ((Student)p).getTaken().get(i).getGrade());
+				}
+				((SAINReportUneditable)view).setTakenCoursesList(tempCourses);
+				tempCourses = null;
+				tempCourses = new ArrayList<>();
+				
+				for(int i = 0; i < ((Student)p).getTaking().size(); i ++) {
+					tempCourses.add(((Student)p).getTaking().get(i).getName() + "\t" + ((Student)p).getTaking().get(i).getGrade());
+				}
+				((SAINReportUneditable)view).setTakingCoursesList(tempCourses);
+				tempCourses = null;
+				tempCourses = new ArrayList<>();
+				
+				for(int i = 0; i < ((Student)p).getOther().size(); i ++) {
+					tempCourses.add(((Student)p).getOther().get(i).getName() + "\t" + ((Student)p).getOther().get(i).getGrade());
+				}
+				((SAINReportUneditable)view).setOtherCoursesList(tempCourses);
+				tempCourses = null;
+				tempCourses = new ArrayList<>();
+				
+				for(int i = 0; i < ((Student)p).getFailed().size(); i ++) {
+					tempCourses.add(((Student)p).getFailed().get(i).getName() + "\t" + ((Student)p).getFailed().get(i).getGrade());
+				}
+				((SAINReportUneditable)view).setFailedCoursesList(tempCourses);
+				tempCourses = null;
+				tempCourses = new ArrayList<>();
+				
+				for(int i = 0; i < ((Student)p).getNeeded().size(); i ++) {
+					tempCourses.add(((Student)p).getNeeded().get(i).getName() + "\t" + ((Student)p).getNeeded().get(i).getGrade());
+				}
+				((SAINReportUneditable)view).setNeededCoursesList(tempCourses);
 				
 				break;
 			case 1:
+//				p = model.getPersons().getStudentBag().get(((FindStudentView)view).getId);
 				view = new SAINReportUneditable(view.getStage());
 				break;
 			case 2:

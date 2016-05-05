@@ -55,24 +55,40 @@ public class SAINReportUneditable extends View {
 		HBox coursePane1 = new HBox(10);
 		HBox coursePane2 = new HBox(10);
 		
+		Label takenL = new Label("Required Courses Taken:");
 		takenList = new ListView<String>();
-		takenList.setItems(items);
+		VBox l1 = new VBox();
+		l1.getChildren().addAll(takenL, takenList);
+		l1.setAlignment(Pos.CENTER);
 		
+		Label takingL = new Label("Currently Taking:");
 		takingList = new ListView<String>();
-		takingList.setItems(items);
+		VBox l2 = new VBox();
+		l2.getChildren().addAll(takingL, takingList);
+		l2.setAlignment(Pos.CENTER);
 		
+		Label otherL = new Label("Other Courses Taken:");
 		otherList = new ListView<String>();
-		otherList.setItems(items);
+		VBox l3 = new VBox();
+		l3.getChildren().addAll(otherL, otherList);
+		l3.setAlignment(Pos.CENTER);
 		
+		Label failedL = new Label("Withdrawn/Failed:");
 		failedList = new ListView<String>();
-		failedList.setItems(items);
+		VBox l4 = new VBox();
+		l4.getChildren().addAll(failedL, failedList);
+		l4.setAlignment(Pos.CENTER);
 		
+		Label neededL = new Label("Courses Needed:");
 		neededList = new ListView<String>();
-		neededList.setItems(items);
+		VBox l5 = new VBox();
+		l5.getChildren().addAll(neededL, neededList);
+		l5.setAlignment(Pos.CENTER);
 		
-		coursePane1.getChildren().addAll(takenList, otherList, failedList);
+		
+		coursePane1.getChildren().addAll(l1, l2, l3);
 		coursePane1.setAlignment(Pos.CENTER);
-		coursePane2.getChildren().addAll(takingList, neededList);
+		coursePane2.getChildren().addAll(l4, l5);
 		coursePane2.setAlignment(Pos.CENTER);
 		
 		vb.getChildren().addAll(gp, coursePane1, coursePane2);
@@ -85,38 +101,43 @@ public class SAINReportUneditable extends View {
 	
 	public void setTakenCoursesList (ArrayList<String> cTakenList) {
 		items = FXCollections.observableArrayList (cTakenList);
+		takenList.setItems(items);
 	}
 	
 	public void setTakingCoursesList (ArrayList<String> cTakingList) {
 		items = FXCollections.observableArrayList (cTakingList);
+		takingList.setItems(items);
 	}
 	
 	public void setOtherCoursesList (ArrayList<String> cOtherList) {
 		items = FXCollections.observableArrayList (cOtherList);
+		otherList.setItems(items);
 	}
 	
 	public void setFailedCoursesList (ArrayList<String> cFailedList) {
 		items = FXCollections.observableArrayList (cFailedList);
+		failedList.setItems(items);
 	}
 	
 	public void setNeededCoursesList (ArrayList<String> cNeededList) {
 		items = FXCollections.observableArrayList (cNeededList);
+		neededList.setItems(items);
 	}
 	
 	public void setName(String name) {
-		this.name.setText("\t\t\t\t" + name);
+		this.name.setText("\t\t\t" + name);
 	}
 	
 	public void setId(String id) {
-		this.id.setText("\t\t\t\t" + id);
+		this.id.setText("\t\t\t" + id);
 	}
 	
-	public void setGpa(double gpa) {
-		this.gpa.setText("\t\t\t\t" + Double.toString(gpa));
+	public void setGpa(String gpa) {
+		this.gpa.setText("\t\t\t" +gpa);
 	}
 	
 	public void setMajor(String major) {
-		this.major.setText("\t\t\t\t" + major);
+		this.major.setText("\t\t\t" + major);
 	}
 
 }
