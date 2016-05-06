@@ -17,7 +17,6 @@ public class CourseBag implements Serializable{
 	
 	public void remove(Course c) {
 		courses.remove(c);
-		System.out.println("Removed!");
 	}
 	
 	public int size() {

@@ -96,13 +96,12 @@ public class Database {
 			String[] str2;
 			while (input2.hasNextLine()) {
 				str2 = input2.nextLine().split(" ");
-				if (str2[4].equals(1)) {
+				int type = Integer.parseInt(str2[4]);
+				if (type == 1) {
 					Faculty f1 = new Faculty(str2[0], str2[1], str2[2], str2[3]);
-					f1.setType(1);
 					fb.add(f1);
 				} else {
 					Admin a1 = new Admin(str2[0], str2[1], str2[2], str2[3]);
-					a1.setType(2);
 					ab.add(a1);
 				}
 			}
@@ -166,6 +165,29 @@ public class Database {
 	public MajorBag getMajors() {
 		return majors;
 	}
-
-
+	
+	public void delete(String id) {
+		FileInputStream fis = null;
+		ObjectInputStream ois = null;
+		try {
+			fis = new FileInputStream("Data.dat");
+			ois = new ObjectInputStream(fis);
+			majors = (MajorBag) ois.readObject();
+			persons = (PersonBag) ois.readObject();
+			ois.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		persons.getStudentBag().delete(persons.getStudentBag().get(id));
+	}
+	
+	public void addStudent(Student s) {
+		if(s.getType() == 0) {
+			persons.getStudentBag().add(s);
+		} 
+	}
+	
+	
 }

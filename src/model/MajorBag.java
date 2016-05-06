@@ -30,5 +30,13 @@ public class MajorBag implements Serializable{
 		}
 		return null;
 	}
+	
+	public Major get(int index) {
+		return majors.get(index);
+	}
+	
+	public int size() {
+		return majors.size();
+	}
 
 }

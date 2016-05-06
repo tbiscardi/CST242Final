@@ -169,7 +169,6 @@ public class Student extends Person implements Serializable{
 			if(taken.containsByName(name) || taking.containsByName(name) || other.containsByName(name)) {
 				needed.remove(needed.get(i));
 				i--;
-				System.out.println();
 			} else {
 				
 			}
