@@ -14,6 +14,8 @@ import model.Student;
 import view.FindStudentView;
 import view.LoginScreenView;
 import view.MySAINHomeScreen;
+import view.NewMajorView;
+import view.NewStudentMajorView;
 import view.SAINReportEditable;
 import view.SAINReportUneditable;
 import view.View;
@@ -42,11 +44,6 @@ public class Controller implements Observer{
 		switch(event) {
 		case LOG_IN_BUTTON:
 			model.openData();
-			
-			model.getPersons().getStudentBag().get("6666");
-			
-			
-			
 			p = model.getPersons().getStudentBag().get(((LoginScreenView) view).getUsername(), ((LoginScreenView) view).getPassword());
 			if(p == null) {
 				p = model.getPersons().getFacultyBag().get(((LoginScreenView) view).getUsername(), ((LoginScreenView) view).getPassword());
@@ -85,6 +82,28 @@ public class Controller implements Observer{
 			}
 			break;
 		case WHAT_IF_BUTTON:
+			if(p.getType() == 0) {
+				view = new NewMajorView(view.getStage());
+				for(int i = 0; i < model.getMajors().size(); i ++) {
+					((NewMajorView)view).addMajors(model.getMajors().get(i).getName());
+				}
+			} else {
+				view = new NewStudentMajorView(view.getStage());
+			}
+			view.addObserver(this);
+			break;
+		case DO_WHAT_IF:
+			if(p.getType() == 0) {
+				appendedStudent = (Student)p;
+				String majorTemp = ((NewMajorView)view).getMajor();
+				appendedStudent.setMajor(model.getMajors().get(majorTemp));
+				
+				generateSain(appendedStudent);
+			} else {
+				view = new FindStudentView(view.getStage());
+			}
+			
+			view.addObserver(this);
 			break;
 		case SEARCH_STUDENT_BUTTON:
 			switch (p.getType()) {

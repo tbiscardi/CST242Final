@@ -19,6 +19,12 @@ public class CourseBag implements Serializable{
 		courses.remove(c);
 	}
 	
+	public void removeAll() {
+		while(!(size() == 0)) {
+			remove(courses.get(0));
+		}
+	}
+	
 	public int size() {
 		return courses.size();
 	}
@@ -27,9 +33,31 @@ public class CourseBag implements Serializable{
 		return courses.get(index);
 	}
 	
+	public Course getByName(Course c) {
+		for(int i = 0; i < size(); i ++) {
+			if(get(i).getName().equals(c.getName())) {
+				return courses.get(i);
+			} else {
+				
+			}
+		}
+		return null;
+		
+	}
+	
 	public boolean contains(Course c) {
 		for(int i = 0; i < size(); i ++) {
 			if(get(i).equals(c)) {
+				return true;
+			} else {
+			}
+		}
+		return false;
+	}
+	
+	public boolean containsByName(Course c) {
+		for(int i = 0; i < size(); i ++) {
+			if(get(i).getName().equals(c.getName())) {
 				return true;
 			} else {
 			}

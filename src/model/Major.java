@@ -15,6 +15,10 @@ public class Major implements Serializable{
 		this.minGPA = 2.0;
 	}
 
+	public Major() {
+
+	}
+
 	public String getName() {
 		return name;
 	}

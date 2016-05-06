@@ -11,6 +11,13 @@ public class Test {
 		db.readTextFiles();
 		db.saveData();
 		db.openData();
+//		
+//		System.out.println(db.getMajors().get("Computer Science").getNeeded().size());
+//		System.out.println(db.getMajors().get("Mathematics").getNeeded().size());
+//		
+//		System.out.println(db.getMajors().get("Computer Science").getNeeded().size());
+//		System.out.println(db.getMajors().get("Mathematics").getNeeded().size());
+		
 	}
 
 }

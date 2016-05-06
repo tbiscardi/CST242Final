@@ -37,21 +37,28 @@ public class Database {
 			while (input3.hasNextLine()) {
 				String name = input3.nextLine();
 				str3 = input3.nextLine().split(",");
-				cb = null;
 				cb = new CourseBag();
+//				System.out.println(str3.length);
 				for (int i = 0; i < str3.length; i++) {
 					cb.add(new Course(str3[i], ""));
 				}
-				Major newMajor = new Major(name, cb);
+				final Major newMajor = new Major(name, cb);
 				majors.add(newMajor);
+//				System.out.println(cb.size());
 			}
 			fr1 = new File(fileName1);
 			Scanner input1 = new Scanner(fr1);
 			String[] str;
 			
 			while (input1.hasNextLine()) {
+				
 				str = input1.nextLine().split(",");
 				Student s1 = new Student(str[0], str[1], str[2], str[3], str[4]);
+//				System.out.println(majors.get(str[5]).getNeeded().size());
+//				for(int i = 0; i < majors.get(str[5]).getNeeded().size(); i ++) {
+//					System.out.println(str[0] + " " + majors.get(str[5]).getNeeded().get(i).getName());
+//				}
+//				System.out.println(majors.get(str[5]).getName());
 				s1.setMajor(majors.get(str[5]));
 				str = input1.nextLine().split(",");
 				cb = new CourseBag();
@@ -62,14 +69,13 @@ public class Database {
 				}
 				s1.setTaken(cb);
 				
-				cb = null;
 				cb = new CourseBag();
 				str = input1.nextLine().split(",");
 				for (int i = 0; i < str.length; i++) {
 					cb.add(new Course(str[i], "IP"));
 				}
 				s1.setTaking(cb);
-				cb = null;
+				
 				cb = new CourseBag();
 				str = input1.nextLine().split(",");
 				for (int i = 0; i < str.length; i++) {
@@ -78,7 +84,7 @@ public class Database {
 
 				}
 				s1.setFailed(cb);
-				cb = null;
+				
 				cb = new CourseBag();
 				str = input1.nextLine().split(",");
 				for (int i = 0; i < str.length; i++) {
@@ -89,6 +95,7 @@ public class Database {
 				s1.setOther(cb);
 				s1.fillCoursesNeeded();
 				sb.add(s1);
+				
 			}
 			fr2 = new File(fileName2);
 			Scanner input2 = new Scanner(fr2);
