@@ -211,7 +211,7 @@ public class Student extends Person implements Serializable{
 	
 	public void resetCourses() {
 		needed.removeAll();
-		CourseBag cb = this.major.getNeeded();
+		CourseBag cb = major.getNeeded();
 		for(int i = 0; i < cb.size(); i ++) {
 			Course temp = cb.get(i);
 			if(!hasCourse(temp)) {

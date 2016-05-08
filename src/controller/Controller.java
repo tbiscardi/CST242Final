@@ -15,9 +15,9 @@ import view.FindStudentView;
 import view.LoginScreenView;
 import view.MySAINHomeScreen;
 import view.NewMajorView;
-import view.NewStudentMajorView;
 import view.SAINReportEditable;
 import view.SAINReportUneditable;
+import view.SearchStudentWIView;
 import view.View;
 
 public class Controller implements Observer{
@@ -67,6 +67,7 @@ public class Controller implements Observer{
 			switch (p.getType()) {
 			case 0:
 				generateSain((Student)p);
+				view.addObserver(this);
 				break;
 			case 1:
 				view = new FindStudentView(view.getStage());
@@ -78,6 +79,7 @@ public class Controller implements Observer{
 				break;
 			default:
 				view = new LoginScreenView(view.getStage());
+				view.addObserver(this);
 				break;
 			}
 			break;
@@ -88,28 +90,47 @@ public class Controller implements Observer{
 					((NewMajorView)view).addMajors(model.getMajors().get(i).getName());
 				}
 			} else {
-				view = new NewStudentMajorView(view.getStage());
+				view = new SearchStudentWIView(view.getStage());
+				for(int i = 0; i < model.getMajors().size(); i ++) {
+					((SearchStudentWIView)view).addMajors(model.getMajors().get(i).getName());
+				}
 			}
 			view.addObserver(this);
 			break;
 		case DO_WHAT_IF:
 			if(p.getType() == 0) {
 				appendedStudent = (Student)p;
+				Major m = appendedStudent.getMajor();
 				String majorTemp = ((NewMajorView)view).getMajor();
 				appendedStudent.setMajor(model.getMajors().get(majorTemp));
 				
 				generateSain(appendedStudent);
+				appendedStudent.setMajor(m);
+				view.addObserver(this);
 			} else {
-				view = new FindStudentView(view.getStage());
+				try {
+					searched = model.getPersons().getStudentBag().get(((SearchStudentWIView)view).getId());
+					Major m = searched.getMajor();
+					String majorTemp = ((SearchStudentWIView)view).getMajor();
+					searched.setMajor(model.getMajors().get(majorTemp));
+					
+					generateSain(searched);
+					searched.setMajor(m);
+					view.addObserver(this);
+				} catch (NullPointerException e) {
+					if(((SearchStudentWIView)view).isMajorEmpty()) {
+						((SearchStudentWIView)view).setMajor("Please select a major");
+					} else {
+						((SearchStudentWIView)view).setId("Student Not Found");
+					}
+				}
 			}
 			
-			view.addObserver(this);
 			break;
 		case SEARCH_STUDENT_BUTTON:
 			switch (p.getType()) {
 			case 1:
 				searched = model.getPersons().getStudentBag().get(((FindStudentView)view).getId());
-				System.out.println(searched.getfName());
 				if(searched == null) {
 					view = new FindStudentView(view.getStage());
 				} else {
@@ -193,6 +214,26 @@ public class Controller implements Observer{
 			model.addStudent(appendedStudent);
 			
 			model.saveData();
+			generateSainEditable(appendedStudent);
+			break;
+		case BACK_BUTTON:
+			if(view instanceof MySAINHomeScreen) {
+				view = new LoginScreenView(view.getStage());
+			} else if(view instanceof FindStudentView) {
+				view = new MySAINHomeScreen(view.getStage());
+			} else if(view instanceof SAINReportUneditable) {
+				view = new MySAINHomeScreen(view.getStage());
+			} else if(view instanceof SAINReportEditable) {
+				view = new MySAINHomeScreen(view.getStage());
+			} else if(view instanceof SearchStudentWIView) {
+				view = new MySAINHomeScreen(view.getStage());
+			} else if(view instanceof NewMajorView) {
+				view = new MySAINHomeScreen(view.getStage());
+			} else {
+				
+			}
+			view.addObserver(this);
+			break;
 		default:
 			break;
 		}
@@ -204,6 +245,7 @@ public class Controller implements Observer{
 		((SAINReportEditable)view).setId(s.getId());
 		((SAINReportEditable)view).setGpa(s.calculateGPA());
 		((SAINReportEditable)view).setMajor(s.getMajor().getName());
+		s.resetCourses();
 		
 		for(int i = 0; i < model.getMajors().size(); i ++) {
 			((SAINReportEditable)view).addMajors(model.getMajors().get(i).getName());
@@ -238,6 +280,7 @@ public class Controller implements Observer{
 			tempCourses = tempCourses + (s.getNeeded().get(i).getName() + "\t" + s.getNeeded().get(i).getGrade()) + "\n";
 		}
 		((SAINReportEditable)view).setNeededArea(tempCourses);
+		s.resetCourses();
 	}
 
 	private void generateSain(Student s) {
@@ -246,6 +289,7 @@ public class Controller implements Observer{
 		((SAINReportUneditable)view).setId(s.getId());
 		((SAINReportUneditable)view).setGpa(s.calculateGPA());
 		((SAINReportUneditable)view).setMajor(s.getMajor().getName());
+		s.resetCourses();
 		ArrayList<String> tempCourses = new ArrayList<>();
 		for(int i = 0; i < s.getTaken().size(); i ++) {
 			tempCourses.add(s.getTaken().get(i).getName() + "\t" + s.getTaken().get(i).getGrade());
@@ -279,6 +323,7 @@ public class Controller implements Observer{
 			tempCourses.add(s.getNeeded().get(i).getName() + "\t" + s.getNeeded().get(i).getGrade());
 		}
 		((SAINReportUneditable)view).setNeededCoursesList(tempCourses);
+		
 	}
 
 }

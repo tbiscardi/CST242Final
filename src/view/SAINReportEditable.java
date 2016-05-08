@@ -24,7 +24,7 @@ public class SAINReportEditable extends View {
 	private TextArea takenList, takingList, neededList, otherList, failedList;
 
 	public SAINReportEditable(Stage stage) {
-		super(stage, new VBox(10), GlobalVariables.width * 2,
+		super(stage, new VBox(10), GlobalVariables.width,
 				GlobalVariables.height * 2);
 		obsArr = new ArrayList<>();
 		VBox vb = (VBox) getRoot();
@@ -90,6 +90,12 @@ public class SAINReportEditable extends View {
 		VBox l5 = new VBox();
 		l5.getChildren().addAll(neededL, neededList);
 		l5.setAlignment(Pos.CENTER);
+		
+		takenL.setMaxWidth(200);
+		takingL.setMaxWidth(200);
+		otherL.setMaxWidth(200);
+		failedL.setMaxWidth(200);
+		neededL.setMaxWidth(200);
 
 		coursePane1.getChildren().addAll(l1, l2, l3);
 		coursePane1.setAlignment(Pos.CENTER);
@@ -102,8 +108,12 @@ public class SAINReportEditable extends View {
 			NotifyObserver(Events.CONFIRM_CHANGES);
 		});
 		
+		Button back = new Button("Return");
+		back.setOnAction(e -> {
+			NotifyObserver(Events.BACK_BUTTON);
+		});		
 
-		vb.getChildren().addAll(gp, coursePane1, coursePane2, confirm);
+		vb.getChildren().addAll(gp, coursePane1, coursePane2, confirm, back);
 		stage.setScene(this);
 		stage.setResizable(false);
 		stage.setTitle("SAIN Report");
@@ -143,7 +153,7 @@ public class SAINReportEditable extends View {
 	}
 
 	public String getMajor() {
-		return major.getPromptText();
+		return major.getValue();
 	}
 
 	public void setTakenArea(String taken) {

@@ -3,9 +3,11 @@ package view;
 import java.util.ArrayList;
 
 import handling.GlobalVariables;
+import handling.GlobalVariables.Events;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
@@ -21,7 +23,7 @@ public class SAINReportUneditable extends View {
 	private ListView<String> takenList, takingList, neededList, otherList, failedList;
 
 	public SAINReportUneditable(Stage stage) {
-		super(stage, new VBox(10), GlobalVariables.width * 2,
+		super(stage, new VBox(10), GlobalVariables.width,
 				GlobalVariables.height * 2);
 		obsArr = new ArrayList<>();
 		VBox vb = (VBox) getRoot();
@@ -85,13 +87,23 @@ public class SAINReportUneditable extends View {
 		l5.getChildren().addAll(neededL, neededList);
 		l5.setAlignment(Pos.CENTER);
 		
+		takenL.setMaxWidth(200);
+		takingL.setMaxWidth(200);
+		otherL.setMaxWidth(200);
+		failedL.setMaxWidth(200);
+		neededL.setMaxWidth(200);
 		
 		coursePane1.getChildren().addAll(l1, l2, l3);
 		coursePane1.setAlignment(Pos.CENTER);
 		coursePane2.getChildren().addAll(l4, l5);
 		coursePane2.setAlignment(Pos.CENTER);
 		
-		vb.getChildren().addAll(gp, coursePane1, coursePane2);
+		Button back = new Button("Return");
+		back.setOnAction(e -> {
+			NotifyObserver(Events.BACK_BUTTON);
+		});
+		
+		vb.getChildren().addAll(gp, coursePane1, coursePane2, back);
 		stage.setScene(this);
 		stage.setResizable(false);
 		stage.setTitle("SAIN Report");

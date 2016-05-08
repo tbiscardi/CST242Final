@@ -29,7 +29,12 @@ public class NewMajorView extends View {
 			NotifyObserver(Events.DO_WHAT_IF);
 		});
 		
-		vb.getChildren().addAll(majorLabel, majors, submit);
+		Button back = new Button("Back to Home Screen");
+		back.setOnAction(e -> {
+			NotifyObserver(Events.BACK_BUTTON);
+		});
+		
+		vb.getChildren().addAll(majorLabel, majors, submit, back);
 		
 		stage.setScene(this);
 		stage.setResizable(false);
