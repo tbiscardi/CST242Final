@@ -43,196 +43,25 @@ public class Controller implements Observer{
 	private void doButtonFunction(Events event) {
 		switch(event) {
 		case LOG_IN_BUTTON:
-			model.openData();
-			p = model.getPersons().getStudentBag().get(((LoginScreenView) view).getUsername(), ((LoginScreenView) view).getPassword());
-			if(p == null) {
-				p = model.getPersons().getFacultyBag().get(((LoginScreenView) view).getUsername(), ((LoginScreenView) view).getPassword());
-				if(p == null) {
-					p = model.getPersons().getAdminBag().get(((LoginScreenView) view).getUsername(), ((LoginScreenView) view).getPassword());
-					if(p == null) {
-						view = new LoginScreenView(view.getStage());
-					}
-					else {
-						view = new MySAINHomeScreen(view.getStage());
-					}
-				} else {
-					view = new MySAINHomeScreen(view.getStage());
-				}
-			} else {
-				view = new MySAINHomeScreen(view.getStage());
-			}
-			view.addObserver(this);
+			loginSequence();
 			break;
 		case SAIN_REPORT_BUTTON:
-			switch (p.getType()) {
-			case 0:
-				generateSain((Student)p);
-				view.addObserver(this);
-				break;
-			case 1:
-				view = new FindStudentView(view.getStage());
-				view.addObserver(this);
-				break;
-			case 2:
-				view = new FindStudentView(view.getStage());
-				view.addObserver(this);
-				break;
-			default:
-				view = new LoginScreenView(view.getStage());
-				view.addObserver(this);
-				break;
-			}
+			sainReportSequence();
 			break;
 		case WHAT_IF_BUTTON:
-			if(p.getType() == 0) {
-				view = new NewMajorView(view.getStage());
-				for(int i = 0; i < model.getMajors().size(); i ++) {
-					((NewMajorView)view).addMajors(model.getMajors().get(i).getName());
-				}
-			} else {
-				view = new SearchStudentWIView(view.getStage());
-				for(int i = 0; i < model.getMajors().size(); i ++) {
-					((SearchStudentWIView)view).addMajors(model.getMajors().get(i).getName());
-				}
-			}
-			view.addObserver(this);
+			whatIfSequence();
 			break;
 		case DO_WHAT_IF:
-			if(p.getType() == 0) {
-				appendedStudent = (Student)p;
-				Major m = appendedStudent.getMajor();
-				String majorTemp = ((NewMajorView)view).getMajor();
-				appendedStudent.setMajor(model.getMajors().get(majorTemp));
-				
-				generateSain(appendedStudent);
-				appendedStudent.setMajor(m);
-				view.addObserver(this);
-			} else {
-				try {
-					searched = model.getPersons().getStudentBag().get(((SearchStudentWIView)view).getId());
-					Major m = searched.getMajor();
-					String majorTemp = ((SearchStudentWIView)view).getMajor();
-					searched.setMajor(model.getMajors().get(majorTemp));
-					
-					generateSain(searched);
-					searched.setMajor(m);
-					view.addObserver(this);
-				} catch (NullPointerException e) {
-					if(((SearchStudentWIView)view).isMajorEmpty()) {
-						((SearchStudentWIView)view).setMajor("Please select a major");
-					} else {
-						((SearchStudentWIView)view).setId("Student Not Found");
-					}
-				}
-			}
-			
+			doWhatIf();
 			break;
 		case SEARCH_STUDENT_BUTTON:
-			switch (p.getType()) {
-			case 1:
-				searched = model.getPersons().getStudentBag().get(((FindStudentView)view).getId());
-				if(searched == null) {
-					view = new FindStudentView(view.getStage());
-				} else {
-					view = new SAINReportUneditable(view.getStage());
-					generateSain(searched);
-				}
-				view.addObserver(this);
-				break;
-			case 2:
-				searched = model.getPersons().getStudentBag().get(((FindStudentView)view).getId());
-				if(searched == null) {
-					view = new FindStudentView(view.getStage());
-				} else {
-					view = new SAINReportEditable(view.getStage());
-					generateSainEditable(searched);
-					
-				}
-				view.addObserver(this);
-				break;
-			default:
-				view = new LoginScreenView(view.getStage());
-				break;
-			}
+			searchStudentSequence();
 			break;
 		case CONFIRM_CHANGES:
-			appendedStudent = new Student();
-			String[] str = ((SAINReportEditable)view).getName().split(" ");
-			appendedStudent.setfName(str[0]);
-			appendedStudent.setlName(str[1]);
-			appendedStudent.setMajor(new Major(((SAINReportEditable)view).getMajor(), model.getMajors().get(((SAINReportEditable)view).getMajor()).getNeeded()));
-			CourseBag cb = new CourseBag();
-			
-			String[] courses = ((SAINReportEditable)view).getTakenArea().split("\n");
-			
-			for(int i = 0; i < courses.length; i ++) {
-				String[] temp = courses[i].split("\t");
-				cb.add(new Course(temp[0], temp[1]));
-			}
-			appendedStudent.setTaken(cb);
-			cb = new CourseBag();
-			courses = ((SAINReportEditable)view).getTakingArea().split("\n");
-			
-			for(int i = 0; i < courses.length; i ++) {
-				String[] temp = courses[i].split("\t");
-				cb.add(new Course(temp[0], temp[1]));
-			}
-			appendedStudent.setTaking(cb);
-			
-			cb = new CourseBag();
-			courses = ((SAINReportEditable)view).getOtherArea().split("\n");
-			
-			for(int i = 0; i < courses.length; i ++) {
-				String[] temp = courses[i].split("\t");
-				cb.add(new Course(temp[0], temp[1]));
-			}
-			appendedStudent.setOther(cb);
-			
-			cb = new CourseBag();
-			courses = ((SAINReportEditable)view).getFailedArea().split("\n");
-			
-			for(int i = 0; i < courses.length; i ++) {
-				String[] temp = courses[i].split("\t");
-				cb.add(new Course(temp[0], temp[1]));
-			}
-			appendedStudent.setFailed(cb);
-			
-			cb = new CourseBag();
-			courses = ((SAINReportEditable)view).getNeededArea().split("\n");
-			
-			for(int i = 0; i < courses.length; i ++) {
-				String[] temp = courses[i].split("\t");
-				cb.add(new Course(temp[0], ""));
-			}
-			appendedStudent.setNeeded(cb);
-			appendedStudent.setId(((SAINReportEditable)view).getId());
-			appendedStudent.setUsername(model.getPersons().getStudentBag().get(((SAINReportEditable)view).getId()).getUsername());
-			appendedStudent.setPassword(model.getPersons().getStudentBag().get(((SAINReportEditable)view).getId()).getPassword());
-			appendedStudent.calculateGPA();
-			model.delete(((SAINReportEditable)view).getId());
-			model.saveData();
-			model.addStudent(appendedStudent);
-			
-			model.saveData();
-			generateSainEditable(appendedStudent);
+			confirmChangesSequence();
 			break;
 		case BACK_BUTTON:
-			if(view instanceof MySAINHomeScreen) {
-				view = new LoginScreenView(view.getStage());
-			} else if(view instanceof FindStudentView) {
-				view = new MySAINHomeScreen(view.getStage());
-			} else if(view instanceof SAINReportUneditable) {
-				view = new MySAINHomeScreen(view.getStage());
-			} else if(view instanceof SAINReportEditable) {
-				view = new MySAINHomeScreen(view.getStage());
-			} else if(view instanceof SearchStudentWIView) {
-				view = new MySAINHomeScreen(view.getStage());
-			} else if(view instanceof NewMajorView) {
-				view = new MySAINHomeScreen(view.getStage());
-			} else {
-				
-			}
-			view.addObserver(this);
+			backButtonSequence();
 			break;
 		default:
 			break;
@@ -324,6 +153,205 @@ public class Controller implements Observer{
 		}
 		((SAINReportUneditable)view).setNeededCoursesList(tempCourses);
 		
+	}
+	
+	private void loginSequence() {
+		model.openData();
+		String username = ((LoginScreenView) view).getUsername();
+		String password = ((LoginScreenView) view).getPassword();
+		p = model.getPersons().getStudentBag().get(username, password);
+		if(p == null) {
+			p = model.getPersons().getFacultyBag().get(username, password);
+			if(p == null) {
+				p = model.getPersons().getAdminBag().get(username, password);
+				if(p == null) {
+					view = new LoginScreenView(view.getStage());
+				}
+				else {
+					view = new MySAINHomeScreen(view.getStage());
+				}
+			} else {
+				view = new MySAINHomeScreen(view.getStage());
+			}
+		} else {
+			view = new MySAINHomeScreen(view.getStage());
+		}
+		view.addObserver(this);
+	}
+	
+	private void sainReportSequence() {
+		switch (p.getType()) {
+		case 0:
+			generateSain((Student)p);
+			view.addObserver(this);
+			break;
+		case 1:
+			view = new FindStudentView(view.getStage());
+			view.addObserver(this);
+			break;
+		case 2:
+			view = new FindStudentView(view.getStage());
+			view.addObserver(this);
+			break;
+		default:
+			view = new LoginScreenView(view.getStage());
+			view.addObserver(this);
+			break;
+		}
+	}
+	
+	private void whatIfSequence() {
+		if(p.getType() == 0) {
+			view = new NewMajorView(view.getStage());
+			for(int i = 0; i < model.getMajors().size(); i ++) {
+				((NewMajorView)view).addMajors(model.getMajors().get(i).getName());
+			}
+		} else {
+			view = new SearchStudentWIView(view.getStage());
+			for(int i = 0; i < model.getMajors().size(); i ++) {
+				((SearchStudentWIView)view).addMajors(model.getMajors().get(i).getName());
+			}
+		}
+		view.addObserver(this);
+	}
+	
+	private void doWhatIf() {
+		if(p.getType() == 0) {
+			appendedStudent = (Student)p;
+			Major m = appendedStudent.getMajor();
+			String majorTemp = ((NewMajorView)view).getMajor();
+			appendedStudent.setMajor(model.getMajors().get(majorTemp));
+			
+			generateSain(appendedStudent);
+			appendedStudent.setMajor(m);
+			view.addObserver(this);
+		} else {
+			try {
+				searched = model.getPersons().getStudentBag().get(((SearchStudentWIView)view).getId());
+				Major m = searched.getMajor();
+				String majorTemp = ((SearchStudentWIView)view).getMajor();
+				searched.setMajor(model.getMajors().get(majorTemp));
+				
+				generateSain(searched);
+				searched.setMajor(m);
+				view.addObserver(this);
+			} catch (NullPointerException e) {
+				if(((SearchStudentWIView)view).isMajorEmpty()) {
+					((SearchStudentWIView)view).setMajor("Please select a major");
+				} else {
+					((SearchStudentWIView)view).setId("Student Not Found");
+				}
+			}
+		}
+	}
+	
+	private void searchStudentSequence() {
+		switch (p.getType()) {
+		case 1:
+			searched = model.getPersons().getStudentBag().get(((FindStudentView)view).getId());
+			if(searched == null) {
+				view = new FindStudentView(view.getStage());
+			} else {
+				view = new SAINReportUneditable(view.getStage());
+				generateSain(searched);
+			}
+			view.addObserver(this);
+			break;
+		case 2:
+			searched = model.getPersons().getStudentBag().get(((FindStudentView)view).getId());
+			if(searched == null) {
+				view = new FindStudentView(view.getStage());
+			} else {
+				view = new SAINReportEditable(view.getStage());
+				generateSainEditable(searched);
+				
+			}
+			view.addObserver(this);
+			break;
+		default:
+			view = new LoginScreenView(view.getStage());
+			break;
+		}
+	}
+	
+	private void confirmChangesSequence() {
+		appendedStudent = new Student();
+		String[] str = ((SAINReportEditable)view).getName().split(" ");
+		appendedStudent.setfName(str[0]);
+		appendedStudent.setlName(str[1]);
+		appendedStudent.setMajor(new Major(((SAINReportEditable)view).getMajor(), model.getMajors().get(((SAINReportEditable)view).getMajor()).getNeeded()));
+		CourseBag cb = new CourseBag();
+		
+		String[] courses = ((SAINReportEditable)view).getTakenArea().split("\n");
+		
+		for(int i = 0; i < courses.length; i ++) {
+			String[] temp = courses[i].split("\t");
+			cb.add(new Course(temp[0], temp[1]));
+		}
+		appendedStudent.setTaken(cb);
+		cb = new CourseBag();
+		courses = ((SAINReportEditable)view).getTakingArea().split("\n");
+		
+		for(int i = 0; i < courses.length; i ++) {
+			String[] temp = courses[i].split("\t");
+			cb.add(new Course(temp[0], temp[1]));
+		}
+		appendedStudent.setTaking(cb);
+		
+		cb = new CourseBag();
+		courses = ((SAINReportEditable)view).getOtherArea().split("\n");
+		
+		for(int i = 0; i < courses.length; i ++) {
+			String[] temp = courses[i].split("\t");
+			cb.add(new Course(temp[0], temp[1]));
+		}
+		appendedStudent.setOther(cb);
+		
+		cb = new CourseBag();
+		courses = ((SAINReportEditable)view).getFailedArea().split("\n");
+		
+		for(int i = 0; i < courses.length; i ++) {
+			String[] temp = courses[i].split("\t");
+			cb.add(new Course(temp[0], temp[1]));
+		}
+		appendedStudent.setFailed(cb);
+		
+		cb = new CourseBag();
+		courses = ((SAINReportEditable)view).getNeededArea().split("\n");
+		
+		for(int i = 0; i < courses.length; i ++) {
+			String[] temp = courses[i].split("\t");
+			cb.add(new Course(temp[0], ""));
+		}
+		appendedStudent.setNeeded(cb);
+		appendedStudent.setId(((SAINReportEditable)view).getId());
+		appendedStudent.setUsername(model.getPersons().getStudentBag().get(((SAINReportEditable)view).getId()).getUsername());
+		appendedStudent.setPassword(model.getPersons().getStudentBag().get(((SAINReportEditable)view).getId()).getPassword());
+		appendedStudent.calculateGPA();
+		model.delete(((SAINReportEditable)view).getId());
+		model.saveData();
+		model.addStudent(appendedStudent);
+		
+		model.saveData();
+		generateSainEditable(appendedStudent);
+	}
+	
+	private void backButtonSequence() {
+		if(view instanceof MySAINHomeScreen) {
+			view = new LoginScreenView(view.getStage());
+		} else if(view instanceof FindStudentView) {
+			view = new MySAINHomeScreen(view.getStage());
+		} else if(view instanceof SAINReportUneditable) {
+			view = new MySAINHomeScreen(view.getStage());
+		} else if(view instanceof SAINReportEditable) {
+			view = new MySAINHomeScreen(view.getStage());
+		} else if(view instanceof SearchStudentWIView) {
+			view = new MySAINHomeScreen(view.getStage());
+		} else if(view instanceof NewMajorView) {
+			view = new MySAINHomeScreen(view.getStage());
+		} else {
+		}
+		view.addObserver(this);
 	}
 
 }
