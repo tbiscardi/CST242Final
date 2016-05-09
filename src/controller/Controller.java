@@ -360,6 +360,7 @@ public class Controller implements Observer {
 		model.addStudent(appendedStudent);
 
 		model.saveData();
+		((SAINReportEditable) view).removeItems();
 		generateSainEditable(appendedStudent);
 	}
 

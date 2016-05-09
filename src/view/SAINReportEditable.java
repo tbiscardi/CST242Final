@@ -139,6 +139,10 @@ public class SAINReportEditable extends View {
 	public void addMajors(String major) {
 		this.major.getItems().add(major);
 	}
+	
+	public void removeItems() {
+		major.getItems().removeAll(major.getItems());
+	}
 
 	public String getName() {
 		return name.getText();
