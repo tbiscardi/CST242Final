@@ -11,21 +11,22 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class MainView extends View{
-	
+public class MainView extends View {
+
 	private LoginScreenView loginView;
 
 	public MainView(Stage stage) {
-		super(stage, new VBox(10), GlobalVariables.width, GlobalVariables.height);
+		super(stage, new VBox(10), GlobalVariables.width,
+				GlobalVariables.height);
 		obsArr = new ArrayList<>();
 		LoginScreenView loginView = new LoginScreenView(stage);
 	}
-	
-	public String getUsername(){
+
+	public String getUsername() {
 		return loginView.getUsername();
 	}
-	
-	public String getPassword(){
+
+	public String getPassword() {
 		return loginView.getPassword();
 	}
 

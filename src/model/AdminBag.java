@@ -3,16 +3,16 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class AdminBag implements Bag, Serializable{
-	
+public class AdminBag implements Bag, Serializable {
+
 	private ArrayList<Admin> admins;
 	public int size;
-	
+
 	public AdminBag() {
 		admins = new ArrayList<>();
 		size = 0;
 	}
-	
+
 	public AdminBag(ArrayList<Admin> list) {
 		admins = list;
 		size = list.size();
@@ -20,7 +20,7 @@ public class AdminBag implements Bag, Serializable{
 
 	@Override
 	public void add(Person p) {
-		if(p.getType() == 2) {
+		if (p.getType() == 2) {
 			admins.add((Admin) p);
 			size++;
 		}
@@ -43,7 +43,5 @@ public class AdminBag implements Bag, Serializable{
 		}
 		return null;
 	}
-	
-	
 
 }

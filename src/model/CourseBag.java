@@ -3,71 +3,71 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CourseBag implements Serializable{
+public class CourseBag implements Serializable {
 
 	private ArrayList<Course> courses;
-	
+
 	public CourseBag() {
 		courses = new ArrayList<>();
 	}
-	
+
 	public void add(Course c) {
 		courses.add(c);
 	}
-	
+
 	public void remove(Course c) {
 		courses.remove(c);
 	}
-	
+
 	public void removeAll() {
-		while(!(size() == 0)) {
+		while (!(size() == 0)) {
 			remove(courses.get(0));
 		}
 	}
-	
+
 	public int size() {
 		return courses.size();
 	}
-	
+
 	public Course get(int index) {
 		return courses.get(index);
 	}
-	
+
 	public Course getByName(Course c) {
-		for(int i = 0; i < size(); i ++) {
-			if(get(i).getName().equals(c.getName())) {
+		for (int i = 0; i < size(); i++) {
+			if (get(i).getName().equals(c.getName())) {
 				return courses.get(i);
 			} else {
-				
+
 			}
 		}
 		return null;
-		
+
 	}
-	
+
 	public boolean contains(Course c) {
-		for(int i = 0; i < size(); i ++) {
-			if(get(i).equals(c)) {
+		for (int i = 0; i < size(); i++) {
+			if (get(i).equals(c)) {
 				return true;
 			} else {
 			}
 		}
 		return false;
 	}
-	
+
 	public boolean containsByName(Course c) {
-		for(int i = 0; i < size(); i ++) {
-			if(get(i).getName().equals(c.getName())) {
+		for (int i = 0; i < size(); i++) {
+			if (get(i).getName().equals(c.getName())) {
 				return true;
 			} else {
 			}
 		}
 		return false;
 	}
-	
+
 	public boolean containsByName(String name) {
-		for(int i = 0; i < size(); i ++) {
-			if(get(i).getName().equals(name)) {
+		for (int i = 0; i < size(); i++) {
+			if (get(i).getName().equals(name)) {
 				return true;
 			} else {
 			}
@@ -99,7 +99,5 @@ public class CourseBag implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
 
 }

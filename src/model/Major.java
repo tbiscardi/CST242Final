@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 
-public class Major implements Serializable{
+public class Major implements Serializable {
 
 	private String name;
 	private CourseBag needed;

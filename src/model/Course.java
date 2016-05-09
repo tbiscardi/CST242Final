@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 
-public class Course implements Serializable{
+public class Course implements Serializable {
 
 	private String name;
 	private String subject;
@@ -127,5 +127,4 @@ public class Course implements Serializable{
 		return true;
 	}
 
-	
 }

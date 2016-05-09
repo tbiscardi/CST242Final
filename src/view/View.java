@@ -8,8 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class View extends Scene implements Subject{
-	
+public class View extends Scene implements Subject {
+
 	protected ArrayList<Observer> obsArr;
 	protected Stage stage;
 	protected boolean first = true;
@@ -19,9 +19,9 @@ public class View extends Scene implements Subject{
 		this.stage = stage;
 		stage.setTitle("MySCCC");
 	}
-	
-	protected void init(){
-		if(first){
+
+	protected void init() {
+		if (first) {
 			stage.setResizable(false);
 			stage.setTitle("Suffolk County Commumity College");
 			stage.show();
@@ -45,9 +45,9 @@ public class View extends Scene implements Subject{
 			observer.update(args);
 		}
 	}
-	
-	public Stage getStage(){
+
+	public Stage getStage() {
 		return stage;
 	}
-	
+
 }

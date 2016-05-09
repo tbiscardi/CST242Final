@@ -12,14 +12,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class LoginScreenView extends View {
-	
+
 	private TextField unField;
 	private PasswordField pwField;
 
 	public LoginScreenView(Stage stage) {
 		super(stage, new VBox(10), 600, 400);
 		obsArr = new ArrayList<>();
-		
+
 		VBox vb = (VBox) getRoot();
 		vb.setStyle("-fx-alignment: center center");
 		Label mysccc = new Label("MySCCC Login");
@@ -32,9 +32,8 @@ public class LoginScreenView extends View {
 		unField.setMaxWidth(200);
 		pwField.setMaxWidth(200);
 
-		
 		login.setDefaultButton(true);
-		
+
 		login.setOnAction(e -> {
 			NotifyObserver(Events.LOG_IN_BUTTON);
 		});
@@ -46,13 +45,13 @@ public class LoginScreenView extends View {
 		init();
 
 	}
-	
-	public String getUsername(){
+
+	public String getUsername() {
 		String usernameS = unField.getText();
 		return usernameS;
 	}
-	
-	public String getPassword(){
+
+	public String getPassword() {
 		String passwordS = pwField.getText();
 		return passwordS;
 	}

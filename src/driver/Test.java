@@ -6,18 +6,9 @@ public class Test {
 
 	public static void main(String[] args) {
 		Database db = new Database();
-//		db.openData();
-//		System.out.println(db.getPersons().getStudentBag().get("6666").getfName());
 		db.readTextFiles();
 		db.saveData();
 		db.openData();
-//		
-//		System.out.println(db.getMajors().get("Computer Science").getNeeded().size());
-//		System.out.println(db.getMajors().get("Mathematics").getNeeded().size());
-//		
-//		System.out.println(db.getMajors().get("Computer Science").getNeeded().size());
-//		System.out.println(db.getMajors().get("Mathematics").getNeeded().size());
-		
 	}
 
 }

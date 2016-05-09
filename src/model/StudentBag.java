@@ -3,14 +3,14 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class StudentBag implements Bag, Serializable{
-	
+public class StudentBag implements Bag, Serializable {
+
 	private ArrayList<Student> students;
-	
+
 	public StudentBag() {
 		students = new ArrayList<>();
 	}
-	
+
 	public StudentBag(ArrayList<Student> list) {
 		students = list;
 	}
@@ -28,16 +28,16 @@ public class StudentBag implements Bag, Serializable{
 	}
 
 	public Student get(String id) {
-		for(int i = 0; i < students.size(); i ++) {
-			if(students.get(i).getId().equals(id)) {
+		for (int i = 0; i < students.size(); i++) {
+			if (students.get(i).getId().equals(id)) {
 				return students.get(i);
 			} else {
-				
+
 			}
 		}
 		return null;
 	}
-	
+
 	public Student get(String username, String password) {
 		for (int i = 0; i < students.size(); i++) {
 			if ((students.get(i).getUsername().equals(username))
