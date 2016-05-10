@@ -9,6 +9,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
+/**
+ * Database class can read from the text files and store data into them such as
+ * Persons and Majors.
+ * 
+ * @author Tom Biscardi
+ */
 public class Database {
 
 	private PersonBag persons;
@@ -19,6 +25,12 @@ public class Database {
 		majors = new MajorBag();
 	}
 
+	/**
+	 * Reads text files into the binary file "Data.dat"
+	 * 
+	 * @precondition Files can be opened
+	 * @postcondition This class holds the values in the text files
+	 */
 	public void readTextFiles() {
 		String fileName1 = "Students.txt";
 		String fileName2 = "OtherUsers.txt";
@@ -117,6 +129,12 @@ public class Database {
 		persons.addAdmin(ab);
 	}
 
+	/**
+	 * Saves any modified data to binary file
+	 * 
+	 * @precondition binary file is accessible
+	 * @postcondition binary file data is updated
+	 */
 	public void saveData() {
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
@@ -134,6 +152,14 @@ public class Database {
 
 	}
 
+	/**
+	 * Sets majors and persons to the MajorBag and PersonBag stored in the
+	 * binary file
+	 * 
+	 * @precondition binary file can be opened
+	 * @postcondition majors is set to the MajorBag and persons is set to the
+	 *                PersonBag in the file
+	 */
 	public void openData() {
 		FileInputStream fis = null;
 		ObjectInputStream ois = null;
@@ -166,7 +192,15 @@ public class Database {
 		return majors;
 	}
 
-	public void delete(String id) {
+	/**
+	 * Deletes a Student from the file by their ID
+	 * 
+	 * @param id
+	 * @throws NullPointerException
+	 * @precondition student ID needs to be found
+	 * @postcondition student is delete from binary file
+	 */
+	public void delete(String id) throws NullPointerException {
 		FileInputStream fis = null;
 		ObjectInputStream ois = null;
 		try {
@@ -183,9 +217,26 @@ public class Database {
 		persons.getStudentBag().delete(persons.getStudentBag().get(id));
 	}
 
+	/**
+	 * Adds a student to the binary file
+	 * 
+	 * @param s
+	 * @precondition student with specified ID does not exist in file
+	 * @postcondition 
+	 */
 	public void addStudent(Student s) {
 		if (s.getType() == 0) {
-			persons.getStudentBag().add(s);
+			for(int i = 0; i < persons.getStudentBag().size(); i ++) {
+				if(!persons.getStudentBag().get(s.getId()).equals(null)) {
+					return;
+				}
+			}
+			
+			if ((s.getId().equals(null))) {
+				
+			} else {
+				persons.getStudentBag().add(s);
+			}
 		}
 	}
 

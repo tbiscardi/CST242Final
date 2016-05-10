@@ -2,14 +2,17 @@ package model;
 
 import java.io.Serializable;
 
+/**
+ * Contains all the info regarding a course
+ * 
+ * @author Tom Biscardi
+ */
 public class Course implements Serializable {
 
 	private String name;
 	private String subject;
 	private String number;
 	private String grade;
-	private double credits;
-	private double qualityPts;
 
 	public Course(String subject, String number, String grade) {
 		super();
@@ -57,34 +60,13 @@ public class Course implements Serializable {
 		this.grade = grade;
 	}
 
-	public double getCredits() {
-		return credits;
-	}
-
-	public void setCredits(double credits) {
-		this.credits = credits;
-	}
-
-	public double getQualityPts() {
-		return qualityPts;
-	}
-
-	public void setQualityPts(double qualityPts) {
-		this.qualityPts = qualityPts;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(credits);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((grade == null) ? 0 : grade.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((number == null) ? 0 : number.hashCode());
-		temp = Double.doubleToLongBits(qualityPts);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((subject == null) ? 0 : subject.hashCode());
 		return result;
 	}
@@ -98,9 +80,6 @@ public class Course implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Course other = (Course) obj;
-		if (Double.doubleToLongBits(credits) != Double
-				.doubleToLongBits(other.credits))
-			return false;
 		if (grade == null) {
 			if (other.grade != null)
 				return false;
@@ -116,9 +95,6 @@ public class Course implements Serializable {
 				return false;
 		} else if (!number.equals(other.number))
 			return false;
-		if (Double.doubleToLongBits(qualityPts) != Double
-				.doubleToLongBits(other.qualityPts))
-			return false;
 		if (subject == null) {
 			if (other.subject != null)
 				return false;
@@ -126,5 +102,7 @@ public class Course implements Serializable {
 			return false;
 		return true;
 	}
+
+	
 
 }

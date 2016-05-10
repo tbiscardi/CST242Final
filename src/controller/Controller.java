@@ -20,6 +20,14 @@ import view.SAINReportUneditable;
 import view.SearchStudentWIView;
 import view.View;
 
+/**
+ * This is the main controller class where all data from the view gets inputted
+ * and is then manipulated accordingly. Here is where we check what type of
+ * person logs in and based on that gives them access to certain features.
+ * 
+ * @author Tom Biscardi
+ * @version 1.0
+ */
 public class Controller implements Observer {
 
 	private Database model;
@@ -27,12 +35,31 @@ public class Controller implements Observer {
 	private Person p;
 	private Student searched, appendedStudent;
 
+	/**
+	 * Initializes Database model and View view parameters and adds this
+	 * Observer to the View class
+	 * 
+	 * @param model
+	 * @param view
+	 */
 	public Controller(Database model, View view) {
 		view.addObserver(this);
 		this.model = model;
 		this.view = view;
 	}
 
+	/**
+	 * Since this class extends Observer, we can override the implemented method
+	 * update. This method checks whether the data passed from the
+	 * NotifyObserver method is valid and then calls the private method
+	 * doButtonFunction to change views and manipulate data based on preceding
+	 * info.
+	 * 
+	 * @param args
+	 * @precondition The data notified by this Observer is an enum in the class
+	 *               GlobalVariables
+	 * @postcondition Based on the button pressed, an action will be performed
+	 */
 	@Override
 	public void update(Object args) {
 		if (args instanceof Events) {
@@ -40,6 +67,14 @@ public class Controller implements Observer {
 		}
 	}
 
+	/**
+	 * Based on the event enum that was passed, the application will continue to
+	 * simulate actions accordingly
+	 * 
+	 * @param event
+	 * @precondition data passed is an enum
+	 * @postcondition an action on the GUI part and the database is performed
+	 */
 	private void doButtonFunction(Events event) {
 		switch (event) {
 		case LOG_IN_BUTTON:
@@ -69,6 +104,16 @@ public class Controller implements Observer {
 
 	}
 
+	/**
+	 * Generates the SAIN report page that only Admins may access. Here a
+	 * searched Student is passed as the parameter and has all of its data
+	 * changed to what has been changed in the view.
+	 * 
+	 * @param s
+	 * @precondition Student was found and database was accessible
+	 * @postcondition An Editable SAIN Report page will be generated based on
+	 *                data entered
+	 */
 	private void generateSainEditable(Student s) {
 		((SAINReportEditable) view).setName(s.getfName() + " " + s.getlName());
 		((SAINReportEditable) view).setId(s.getId());
@@ -123,6 +168,14 @@ public class Controller implements Observer {
 		s.resetCourses();
 	}
 
+	/**
+	 * Generates the SAIN Report that both Students and Faculty may access. This
+	 * contains data that is only viewable.
+	 * 
+	 * @param s
+	 * @precondition Student entered was valid and database was accessible
+	 * @postcondition Generates SAIN Report page that is only viewable data
+	 */
 	private void generateSain(Student s) {
 		view = new SAINReportUneditable(view.getStage());
 		((SAINReportUneditable) view)
@@ -172,6 +225,17 @@ public class Controller implements Observer {
 
 	}
 
+	/**
+	 * Sequence activated while user tries to log in. Here the data entered by
+	 * the user is verified with the database containing users and will allow
+	 * the appropriate access depending on the account logging in.
+	 * 
+	 * @precondition Database is accessible and data entered verifies with the
+	 *               database
+	 * @postcondition Based on the type of account logging in, the global
+	 *                variable Person p will be set to the person entered and
+	 *                different access will be granted.
+	 */
 	private void loginSequence() {
 		model.openData();
 		String username = ((LoginScreenView) view).getUsername();
@@ -195,6 +259,15 @@ public class Controller implements Observer {
 		view.addObserver(this);
 	}
 
+	/**
+	 * When SAIN Report button is pressed, this method directs where the user is
+	 * sent and the view will change accordingly
+	 * 
+	 * @precondition Person p has a valid type
+	 * @postcondition For a Student, their SAIN report is viewable; for a
+	 *                Faculty and Admin, a different view will show asking the
+	 *                user to search for a Student by their ID
+	 */
 	private void sainReportSequence() {
 		switch (p.getType()) {
 		case 0:
@@ -216,6 +289,15 @@ public class Controller implements Observer {
 		}
 	}
 
+	/**
+	 * Generates different What-If Analysis based on if the user is a student,
+	 * or a faculty or admin. There they will be asked to input the major
+	 * desired. Faculty and Admin must also input a Student ID to search.
+	 * 
+	 * @precondition Person p has a valid type
+	 * @postcondition A new View will be shown asking the user for the desired
+	 *                major.
+	 */
 	private void whatIfSequence() {
 		if (p.getType() == 0) {
 			view = new NewMajorView(view.getStage());
@@ -233,6 +315,17 @@ public class Controller implements Observer {
 		view.addObserver(this);
 	}
 
+	/**
+	 * Takes in the data from the major selecting view class and generates a
+	 * SAIN Report for a Student but with data changed so that their major is
+	 * what the user input. Note: this is only temporary and does not change the
+	 * Student's actual major for any users.
+	 * 
+	 * @precondition Valid data was entered in all fields and Person p has a
+	 *               valid type
+	 * @postcondition A viewable only SAIN Report is generated based on the
+	 *                Student and major entered
+	 */
 	private void doWhatIf() {
 		if (p.getType() == 0) {
 			appendedStudent = (Student) p;
@@ -265,6 +358,16 @@ public class Controller implements Observer {
 		}
 	}
 
+	/**
+	 * The data entered in the FindStudentView is verified and based on the type
+	 * of Person p, a different SAIN Report will be generated depending on the
+	 * Student inputted.
+	 * 
+	 * @precondition Valid data was entered, Database was accessible and Student
+	 *               can be found
+	 * @postcondition A SAIN Report will be generated based on the data up until
+	 *                now
+	 */
 	private void searchStudentSequence() {
 		switch (p.getType()) {
 		case 1:
@@ -296,6 +399,16 @@ public class Controller implements Observer {
 		}
 	}
 
+	/**
+	 * When an Editable SAIN Report has been generated when the confirm changes
+	 * button is pressed, the student being viewed will have its values changed
+	 * based on what is now in the text areas.
+	 * 
+	 * @precondition Data was entered correctly and Database was accessible
+	 * @postcondition Editable SAIN Report page will update and the student
+	 *                being viewed will permanently contain the new values
+	 *                entered
+	 */
 	private void confirmChangesSequence() {
 		appendedStudent = new Student();
 		String[] str = ((SAINReportEditable) view).getName().split(" ");
@@ -364,20 +477,21 @@ public class Controller implements Observer {
 		generateSainEditable(appendedStudent);
 	}
 
+	/**
+	 * When the back button on any screen has been pressed, depending on the
+	 * screen currently on, the user will be redirected. If on the home screen
+	 * the user will log out, on any other screen the user will be sent to the
+	 * home screen.
+	 * 
+	 * @precondition The user is on a valid view page
+	 * @postcondition User will either be logged out or sent to the home page
+	 *                depending on the page they are currently on
+	 */
 	private void backButtonSequence() {
 		if (view instanceof MySAINHomeScreen) {
 			view = new LoginScreenView(view.getStage());
-		} else if (view instanceof FindStudentView) {
-			view = new MySAINHomeScreen(view.getStage());
-		} else if (view instanceof SAINReportUneditable) {
-			view = new MySAINHomeScreen(view.getStage());
-		} else if (view instanceof SAINReportEditable) {
-			view = new MySAINHomeScreen(view.getStage());
-		} else if (view instanceof SearchStudentWIView) {
-			view = new MySAINHomeScreen(view.getStage());
-		} else if (view instanceof NewMajorView) {
-			view = new MySAINHomeScreen(view.getStage());
 		} else {
+			view = new MySAINHomeScreen(view.getStage());
 		}
 		view.addObserver(this);
 	}

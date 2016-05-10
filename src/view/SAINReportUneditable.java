@@ -15,6 +15,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * View that creates a Scene for the Student or Faculty to view their Uneditable
+ * SAIN Report.
+ * 
+ * @author Tom Biscardi
+ */
 public class SAINReportUneditable extends View {
 
 	private Label nameLabel, name, idLabel, id, gpaLabel, gpa, majorLabel,
@@ -23,6 +29,12 @@ public class SAINReportUneditable extends View {
 	private ListView<String> takenList, takingList, neededList, otherList,
 			failedList;
 
+	/**
+	 * Scene is changed so that is shows all the students data in labels and
+	 * listViews.
+	 * 
+	 * @param stage
+	 */
 	public SAINReportUneditable(Stage stage) {
 		super(stage, new VBox(10), GlobalVariables.width,
 				GlobalVariables.height * 2);
@@ -113,26 +125,51 @@ public class SAINReportUneditable extends View {
 
 	}
 
+	/**
+	 * Set the values of the takenList ListView
+	 * 
+	 * @param cTakenList
+	 */
 	public void setTakenCoursesList(ArrayList<String> cTakenList) {
 		items = FXCollections.observableArrayList(cTakenList);
 		takenList.setItems(items);
 	}
 
+	/**
+	 * Set the values of the takingList ListView
+	 * 
+	 * @param cTakingList
+	 */
 	public void setTakingCoursesList(ArrayList<String> cTakingList) {
 		items = FXCollections.observableArrayList(cTakingList);
 		takingList.setItems(items);
 	}
 
+	/**
+	 * Set the values of the otherList ListView
+	 * 
+	 * @param cOtherList
+	 */
 	public void setOtherCoursesList(ArrayList<String> cOtherList) {
 		items = FXCollections.observableArrayList(cOtherList);
 		otherList.setItems(items);
 	}
 
+	/**
+	 * Set the values of the failedList ListView
+	 * 
+	 * @param cFailedList
+	 */
 	public void setFailedCoursesList(ArrayList<String> cFailedList) {
 		items = FXCollections.observableArrayList(cFailedList);
 		failedList.setItems(items);
 	}
 
+	/**
+	 * Set the values of the neededList ListView
+	 * 
+	 * @param cNeededList
+	 */
 	public void setNeededCoursesList(ArrayList<String> cNeededList) {
 		items = FXCollections.observableArrayList(cNeededList);
 		neededList.setItems(items);

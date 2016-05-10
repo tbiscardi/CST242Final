@@ -1,5 +1,12 @@
 package handling;
 
+/**
+ * This class contains enum Events that different views's buttons use to notify
+ * the observer. Here is also where the default height and width of most stages
+ * are set.
+ * 
+ * @author Tom Biscardi
+ */
 public class GlobalVariables {
 
 	public enum Events {

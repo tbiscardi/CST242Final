@@ -2,6 +2,11 @@ package model;
 
 import java.io.Serializable;
 
+/**
+ * Class that hold values for a major
+ * 
+ * @author Tom Biscardi
+ */
 public class Major implements Serializable {
 
 	private String name;

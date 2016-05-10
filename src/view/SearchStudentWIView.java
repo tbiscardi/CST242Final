@@ -12,11 +12,23 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * View that creates a Scene that an admin or faculty access in order to do a
+ * What-If Analysis for a searched by ID student and choose their major.
+ * 
+ * @author Tom Biscardi
+ */
 public class SearchStudentWIView extends View {
 
 	private TextField idField;
 	private ComboBox<String> majors;
 
+	/**
+	 * Scene created that contains data areas to enter a student ID to search
+	 * and a major from a ComboBox.
+	 * 
+	 * @param stage
+	 */
 	public SearchStudentWIView(Stage stage) {
 		super(stage, new VBox(10), GlobalVariables.width,
 				GlobalVariables.height);
@@ -62,14 +74,27 @@ public class SearchStudentWIView extends View {
 		this.majors.setPromptText(major);
 	}
 
+	/**
+	 * Boolean that checks if a Major was entered
+	 * @return
+	 */
 	public boolean isMajorEmpty() {
 		return this.majors.getPromptText() == "";
 	}
 
+	/**
+	 * Adds a value to the majors ComboBox
+	 * 
+	 * @param major
+	 */
 	public void addMajors(String major) {
 		this.majors.getItems().add(major);
 	}
 
+	/**
+	 * Gets the value of the majors ComboBox entered
+	 * @return
+	 */
 	public String getMajor() {
 		return majors.getValue();
 	}

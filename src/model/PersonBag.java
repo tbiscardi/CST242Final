@@ -2,6 +2,11 @@ package model;
 
 import java.io.Serializable;
 
+/**
+ * Bag class that holds an ArrayList of Persons
+ * 
+ * @author Tom Biscardi
+ */
 public class PersonBag implements Serializable {
 
 	private StudentBag sb;
@@ -9,9 +14,9 @@ public class PersonBag implements Serializable {
 	private AdminBag ab;
 
 	public PersonBag() {
-		ab = null;
-		fb = null;
-		ab = null;
+		sb = new StudentBag();
+		fb = new FacultyBag();
+		ab = new AdminBag();
 	}
 
 	public PersonBag(StudentBag sb, FacultyBag fb, AdminBag ab) {
@@ -20,26 +25,50 @@ public class PersonBag implements Serializable {
 		this.ab = ab;
 	}
 
+	/**
+	 * Sets StudentBag
+	 * 
+	 * @param sb
+	 */
 	public void addStudents(StudentBag sb) {
 		this.sb = sb;
 	}
 
+	/**
+	 * Sets FacultyBag
+	 * 
+	 * @param fb
+	 */
 	public void addFaculty(FacultyBag fb) {
 		this.fb = fb;
 	}
 
+	/**
+	 * Sets AdminBag
+	 * 
+	 * @param ab
+	 */
 	public void addAdmin(AdminBag ab) {
 		this.ab = ab;
 	}
 
+	/**
+	 * Removes StudentBag
+	 */
 	public void removeStudents() {
 		this.sb = null;
 	}
 
+	/**
+	 * Removes FacultyBag
+	 */
 	public void removeFaculty() {
 		this.fb = null;
 	}
 
+	/**
+	 * Removes AdminBag
+	 */
 	public void removeAdmin() {
 		this.ab = null;
 	}

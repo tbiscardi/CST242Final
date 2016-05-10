@@ -2,6 +2,11 @@ package model;
 
 import java.io.Serializable;
 
+/**
+ * Superclass to Student, Faculty and Admin classes
+ * 
+ * @author Tom Biscardi
+ */
 public class Person implements Serializable {
 	private String fName;
 	private String lName;

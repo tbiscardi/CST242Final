@@ -3,6 +3,11 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Class that holds an ArrayList of Courses
+ * 
+ * @author Tom Biscardi
+ */
 public class CourseBag implements Serializable {
 
 	private ArrayList<Course> courses;
@@ -11,28 +16,58 @@ public class CourseBag implements Serializable {
 		courses = new ArrayList<>();
 	}
 
+	/**
+	 * Adds a course to courses ArrayList
+	 * 
+	 * @param c
+	 */
 	public void add(Course c) {
 		courses.add(c);
 	}
 
+	/**
+	 * Removes course from courses ArrayList
+	 * 
+	 * @param c
+	 */
 	public void remove(Course c) {
 		courses.remove(c);
 	}
 
+	/**
+	 * Clears all data from Arraylist courses
+	 */
 	public void removeAll() {
 		while (!(size() == 0)) {
 			remove(courses.get(0));
 		}
 	}
 
+	/**
+	 * Returns the size of ArrayList courses
+	 * 
+	 * @return size of courses
+	 */
 	public int size() {
 		return courses.size();
 	}
 
+	/**
+	 * Gets the course at the index
+	 * 
+	 * @param index
+	 * @return course in ArrayList of specified index
+	 */
 	public Course get(int index) {
 		return courses.get(index);
 	}
 
+	/**
+	 * Gets the course by its name
+	 * 
+	 * @param c
+	 * @return course searched from the name
+	 */
 	public Course getByName(Course c) {
 		for (int i = 0; i < size(); i++) {
 			if (get(i).getName().equals(c.getName())) {
@@ -45,6 +80,12 @@ public class CourseBag implements Serializable {
 
 	}
 
+	/**
+	 * Boolean that checks whether this Bag contains param c
+	 * 
+	 * @param c
+	 * @return true if courses contains param c
+	 */
 	public boolean contains(Course c) {
 		for (int i = 0; i < size(); i++) {
 			if (get(i).equals(c)) {
@@ -55,6 +96,12 @@ public class CourseBag implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Boolean that checks whether this Bag has a course with the same name as c
+	 * 
+	 * @param c
+	 * @return true if courses contains param c
+	 */
 	public boolean containsByName(Course c) {
 		for (int i = 0; i < size(); i++) {
 			if (get(i).getName().equals(c.getName())) {
@@ -65,6 +112,12 @@ public class CourseBag implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Boolean that checks whether this Bag has a course with name param name
+	 * 
+	 * @param name
+	 * @return true if courses contains a course with name param name
+	 */
 	public boolean containsByName(String name) {
 		for (int i = 0; i < size(); i++) {
 			if (get(i).getName().equals(name)) {

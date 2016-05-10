@@ -2,6 +2,11 @@ package model;
 
 import java.io.Serializable;
 
+/**
+ * Extension of Person class with the automatically set type as 2.
+ * 
+ * @author Tom Biscardi
+ */
 public class Admin extends Person implements Serializable {
 
 	public Admin() {

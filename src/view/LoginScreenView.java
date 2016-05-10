@@ -11,11 +11,21 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * View that changes the scene to the login screen
+ * 
+ * @author Tom Biscardi
+ */
 public class LoginScreenView extends View {
 
 	private TextField unField;
 	private PasswordField pwField;
 
+	/**
+	 * Sets scene that has a username Textfield and a password PasswordField
+	 * 
+	 * @param stage
+	 */
 	public LoginScreenView(Stage stage) {
 		super(stage, new VBox(10), 600, 400);
 		obsArr = new ArrayList<>();
@@ -46,11 +56,20 @@ public class LoginScreenView extends View {
 
 	}
 
+	/**
+	 * Returns Username entered
+	 * 
+	 * @return text from usernameField
+	 */
 	public String getUsername() {
 		String usernameS = unField.getText();
 		return usernameS;
 	}
 
+	/**
+	 * Returns password entered
+	 * @return text from passwordField
+	 */
 	public String getPassword() {
 		String passwordS = pwField.getText();
 		return passwordS;

@@ -16,8 +16,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * View that creates Scene that creates an Editable SAIN Report for Admins.
+ * 
+ * @author Tom Biscardi
+ */
 public class SAINReportEditable extends View {
 
+	/**
+	 * Scene created to have an Editable SAIN Report
+	 */
 	private Label nameLabel, idLabel, gpaLabel, majorLabel;
 	private TextField name, id, gpa;
 	private ComboBox<String> major;
@@ -136,10 +144,17 @@ public class SAINReportEditable extends View {
 		this.major.setPromptText(major);
 	}
 	
+	/**
+	 * Adds a value to the major ComboBox
+	 * @param major
+	 */
 	public void addMajors(String major) {
 		this.major.getItems().add(major);
 	}
 	
+	/**
+	 * Removes all items in the major ComboBox
+	 */
 	public void removeItems() {
 		major.getItems().removeAll(major.getItems());
 	}

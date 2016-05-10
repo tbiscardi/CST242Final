@@ -3,6 +3,11 @@ package model;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 
+/**
+ * A subclass of Person object and automatically sets type to 0
+ * 
+ * @author Tom Biscardi
+ */
 public class Student extends Person implements Serializable {
 
 	private String id;
@@ -48,6 +53,15 @@ public class Student extends Person implements Serializable {
 		this.gpa = gpa;
 	}
 
+	/**
+	 * Calculates GPA based on the grades the student has an the amount of
+	 * classes they take. Note: This calculation assumes that all classes are
+	 * worth the same amount of credits.
+	 * 
+	 * @precondition student took classes
+	 * @postcondition gpa is set to what was calculated
+	 * @return GPA as a String
+	 */
 	public String calculateGPA() {
 		double avg = 0.0;
 		double size = taken.size() + other.size() + failed.size();
@@ -130,8 +144,6 @@ public class Student extends Person implements Serializable {
 			this.major = major;
 			resetCourses();
 		}
-		// System.out.println(major.getNeeded().size());
-		// System.out.println(this.major.getNeeded().size() + "\n");
 	}
 
 	public CourseBag getTaken() {
@@ -182,6 +194,12 @@ public class Student extends Person implements Serializable {
 		this.credits = credits;
 	}
 
+	/**
+	 * Fills the Needed Courses CourseBag based on the Students major
+	 * 
+	 * @precondition student has a major
+	 * @postcondition CourseBag needed is filled correctly
+	 */
 	public void fillCoursesNeeded() {
 		needed = new CourseBag();
 		for (int i = 0; i < this.major.getNeeded().size(); i++) {
@@ -199,6 +217,12 @@ public class Student extends Person implements Serializable {
 		}
 	}
 
+	/**
+	 * Checks if Student took, or is taking a course
+	 * 
+	 * @param c
+	 * @return true if student has course c false if student does have course c
+	 */
 	public boolean hasCourse(Course c) {
 		if (taken.containsByName(c)) {
 			return true;
@@ -211,6 +235,13 @@ public class Student extends Person implements Serializable {
 		}
 	}
 
+	/**
+	 * Usually called when major is changed because then the courses need to
+	 * move to different CourseBags that they belong in based on the new major.
+	 * 
+	 * @precondition student has a major
+	 * @postcondition courses are now in the correct CourseBags
+	 */
 	public void resetCourses() {
 		needed.removeAll();
 		CourseBag cb = major.getNeeded();

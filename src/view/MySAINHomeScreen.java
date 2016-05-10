@@ -14,8 +14,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * View that creates a Scene that opens the SCCC home page
+ * 
+ * @author Tom Biscardi
+ */
 public class MySAINHomeScreen extends View {
 
+	/**
+	 * Scene is changed to have the SCCC logo and the buttons to direct the user
+	 * to either do a SAIN Report or What-If Analysis.
+	 * 
+	 * @param stage
+	 */
 	public MySAINHomeScreen(Stage stage) {
 		super(stage, new VBox(25), GlobalVariables.width,
 				GlobalVariables.height);
