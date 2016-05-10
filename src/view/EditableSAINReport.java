@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -44,7 +45,7 @@ public class EditableSAINReport extends View {
 	public EditableSAINReport(Stage stage) {
 		super(stage, new VBox(10), GlobalVariables.width,
 				GlobalVariables.height * 2);
-		stage.getModality();
+//		stage.getModality();
 		obsArr = new ArrayList<>();
 		VBox vb = (VBox) getRoot();
 		vb.setStyle("-fx-alignment: center center");
@@ -348,6 +349,7 @@ public class EditableSAINReport extends View {
 	public void addButtonStage() {
 		Stage newStage = new Stage();
 		newStage.setTitle("Add Course");
+		newStage.initModality(Modality.APPLICATION_MODAL);
 		Label newCourseL = new Label("Enter Course:");
 		newCourseField = new TextField("e.g. CST141");
 
@@ -395,7 +397,7 @@ public class EditableSAINReport extends View {
 	 */
 	public void removeButtonStage() {
 		newStage2 = new Stage();
-		newStage2.getModality();
+		newStage2.initModality(Modality.APPLICATION_MODAL);
 		newStage2.setTitle("Modify Courses");
 		VBox localRoot = new VBox(10);
 		Label selectLabel = new Label("Select Course: ");
@@ -446,7 +448,7 @@ public class EditableSAINReport extends View {
 	 */
 	public void editStage() {
 		Stage newStage = new Stage();
-		newStage.getModality();
+		newStage.initModality(Modality.APPLICATION_MODAL);
 		newStage.setTitle("Edit Selected Course");
 		String toEdit = getSelectedCoursesItem();
 		if (toEdit == null) {
