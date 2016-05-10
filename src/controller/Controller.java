@@ -5,7 +5,6 @@ import handling.Observer;
 
 import java.util.ArrayList;
 
-import javafx.collections.ObservableList;
 import model.Course;
 import model.CourseBag;
 import model.Database;
@@ -115,6 +114,12 @@ public class Controller implements Observer {
 
 	}
 
+	/**
+	 * Edit Courses sequence changes the grade of the class selected.
+	 * 
+	 * @precondition Course was selected from SAIN report
+	 * @postcondition Course's grade was modified
+	 */
 	private void editCourseSequence() {
 		String toEdit = ((EditableSAINReport) view).getSelectedCoursesItem();
 		String course = ((EditableSAINReport) view).getCLabel();
@@ -122,26 +127,43 @@ public class Controller implements Observer {
 		String[] edit = toEdit.split("\t");
 		Course newC = new Course(course, grade);
 		Course oldC = new Course(edit[0], edit[1]);
-		searched.delete(oldC);
-		searched.addCourse(newC);
+		try {
+			searched.delete(oldC);
+			searched.addCourse(newC);
+		} catch (NullPointerException e) {
+			searched.addCourse(oldC);
+		}
 		model.saveData();
 		generateEditableSAINReport(searched);
 	}
 
+	/**
+	 * Remove Course Sequence Deletes the selected Course from the Student.
+	 * 
+	 * @precondition Course was selected from SAIN Report
+	 * @postcondition Course was deleted from Student
+	 */
 	private void removeCourseSequence() {
 		String toDelete = ((EditableSAINReport) view).getSelectedCoursesItem();
-		if(toDelete == null) {
-			
+		if (toDelete == null) {
+
 		} else {
 			String[] str = toDelete.split("\t");
 			Course c = new Course(str[0], str[1]);
 			searched.delete(c);
 		}
 		model.saveData();
-		
+
 		generateEditableSAINReport(searched);
 	}
 
+	/**
+	 * Change Major Sequence that changes the major of the searched Student to
+	 * what was selected in the ComboBox
+	 * 
+	 * @precondition a major was selected
+	 * @postcondition major of student was changed
+	 */
 	private void changeMajorSequence() {
 		try {
 			if (((EditableSAINReport) view).getMajor().equals(
@@ -156,9 +178,15 @@ public class Controller implements Observer {
 		} catch (NullPointerException e) {
 
 		}
-
 	}
 
+	/**
+	 * Add Course Sequence that adds any course to the Student's SAIN Report.
+	 * 
+	 * @precondition Course is entered properly
+	 * @postcondition Course is added and placed in the right spot(s) on the
+	 *                SAIN Report.
+	 */
 	private void addCourseSeq() {
 		if (((EditableSAINReport) view).getCourseA() == null
 				|| ((EditableSAINReport) view).getGrade() == null
@@ -175,83 +203,13 @@ public class Controller implements Observer {
 		}
 	}
 
-	// private void addCourseSequence() {
-	// String[] str = ((EditableSAINReport) view).getName().split(" ");
-	// appendedStudent.setfName(str[0]);
-	// appendedStudent.setlName(str[1]);
-	// appendedStudent.setId(((EditableSAINReport) view).getId());
-	//
-	// Course newCourse = new Course(((EditableSAINReport) view).getCourseA(),
-	// ((EditableSAINReport) view).getGrade());
-	// appendedStudent.addCourse(newCourse);
-	//
-	// for (int i = 0; i < model.getMajors().size(); i++) {
-	// ((EditableSAINReport) view).addMajors(model.getMajors().get(i)
-	// .getName());
-	// }
-	// ((EditableSAINReport)
-	// view).setMajor(appendedStudent.getMajor().getName());
-	//
-	// //Adds taken courses
-	// ObservableList<String> tempCourses = ((EditableSAINReport)
-	// view).getTakenArea();
-	// for(int i = 0; i < tempCourses.size(); i ++) {
-	// String[] course = tempCourses.get(i).split("\t");
-	// appendedStudent.addCourse(new Course(course[0], course[1]));
-	// }
-	// ((EditableSAINReport) view).setTakenCoursesList(tempCourses);
-	//
-	//
-	// //Adds taking courses
-	// tempCourses = ((EditableSAINReport) view).getTakingArea();
-	// for(int i = 0; i < tempCourses.size(); i ++) {
-	// String[] course = tempCourses.get(i).split("\t");
-	// appendedStudent.addCourse(new Course(course[0], course[1]));
-	// }
-	// ((EditableSAINReport) view).setTakingCoursesList(tempCourses);
-	//
-	// //Adds other courses
-	// tempCourses = ((EditableSAINReport) view).getOtherArea();
-	// for(int i = 0; i < tempCourses.size(); i ++) {
-	// String[] course = tempCourses.get(i).split("\t");
-	// appendedStudent.addCourse(new Course(course[0], course[1]));
-	// }
-	// ((EditableSAINReport) view).setOtherCoursesList(tempCourses);
-	//
-	// //Add failed courses
-	// tempCourses = ((EditableSAINReport) view).getFailedArea();
-	// for(int i = 0; i < tempCourses.size(); i ++) {
-	// String[] course = tempCourses.get(i).split("\t");
-	// appendedStudent.addCourse(new Course(course[0], course[1]));
-	// }
-	// ((EditableSAINReport) view).setFailedCoursesList(tempCourses);
-	//
-	// ArrayList<String> tempCourses2 = new ArrayList<String>();
-	// CourseBag n = appendedStudent.getNeeded();
-	// for(int i = 0; i < n.size(); i ++) {
-	// tempCourses2.add(n.get(i).getName() + "\t" + n.get(i).getGrade());
-	// }
-	// ((EditableSAINReport) view).setNeededCoursesList(tempCourses2);
-	//
-	// try {
-	// appendedStudent.setUsername(model.getPersons().getStudentBag()
-	// .get(((EditableSAINReport) view).getId()).getUsername());
-	// appendedStudent.setPassword(model.getPersons().getStudentBag()
-	// .get(((EditableSAINReport) view).getId()).getPassword());
-	// } catch (Exception e) {
-	// appendedStudent.setUsername(searched.getUsername());
-	// appendedStudent.setPassword(searched.getPassword());
-	// }
-	// appendedStudent.calculateGPA();
-	// model.delete(((EditableSAINReport) view).getId());
-	// model.saveData();
-	// model.addStudent(appendedStudent);
-	//
-	// model.saveData();
-	// ((EditableSAINReport) view).removeItems();
-	// generateEditableSAINReport(appendedStudent);
-	// }
-
+	/**
+	 * Generates the editable SAIN Report that only admins may access.
+	 * 
+	 * @param s
+	 * @precondition student s is searched and p is of type 2 (admin)
+	 * @postcondition Editable SAIN Report for Student s is generated
+	 */
 	private void generateEditableSAINReport(Student s) {
 		((EditableSAINReport) view).setName(s.getfName() + " " + s.getlName());
 		((EditableSAINReport) view).setId(s.getId());
@@ -309,70 +267,6 @@ public class Controller implements Observer {
 		appendedStudent = new Student();
 		appendedStudent.setfName("");
 		appendedStudent.setMajor(s.getMajor());
-	}
-
-	/**
-	 * Generates the SAIN report page that only Admins may access. Here a
-	 * searched Student is passed as the parameter and has all of its data
-	 * changed to what has been changed in the view.
-	 * 
-	 * @param s
-	 * @precondition Student was found and database was accessible
-	 * @postcondition An Editable SAIN Report page will be generated based on
-	 *                data entered
-	 */
-	private void generateSainEditable(Student s) {
-		((SAINReportEditable) view).setName(s.getfName() + " " + s.getlName());
-		((SAINReportEditable) view).setId(s.getId());
-		((SAINReportEditable) view).setGpa(s.calculateGPA());
-		((SAINReportEditable) view).setMajor(s.getMajor().getName());
-		s.resetCourses();
-
-		for (int i = 0; i < model.getMajors().size(); i++) {
-			((SAINReportEditable) view).addMajors(model.getMajors().get(i)
-					.getName());
-		}
-
-		String tempCourses = "";
-		for (int i = 0; i < s.getTaken().size(); i++) {
-			tempCourses = tempCourses
-					+ (s.getTaken().get(i).getName() + "\t" + s.getTaken()
-							.get(i).getGrade()) + "\n";
-		}
-		((SAINReportEditable) view).setTakenArea(tempCourses);
-		tempCourses = "";
-
-		for (int i = 0; i < s.getTaking().size(); i++) {
-			tempCourses = tempCourses
-					+ (s.getTaking().get(i).getName() + "\t" + s.getTaking()
-							.get(i).getGrade()) + "\n";
-		}
-		((SAINReportEditable) view).setTakingArea(tempCourses);
-		tempCourses = "";
-
-		for (int i = 0; i < s.getOther().size(); i++) {
-			tempCourses = tempCourses
-					+ (s.getOther().get(i).getName() + "\t" + s.getOther()
-							.get(i).getGrade()) + "\n";
-		}
-		((SAINReportEditable) view).setOtherArea(tempCourses);
-		tempCourses = "";
-
-		for (int i = 0; i < s.getFailed().size(); i++) {
-			tempCourses = tempCourses
-					+ (s.getFailed().get(i).getName() + "\t" + s.getFailed()
-							.get(i).getGrade()) + "\n";
-		}
-		((SAINReportEditable) view).setFailedArea(tempCourses);
-		tempCourses = "";
-
-		for (int i = 0; i < s.getNeeded().size(); i++) {
-			tempCourses = tempCourses
-					+ (s.getNeeded().get(i).getName() + "\t" + s.getNeeded()
-							.get(i).getGrade()) + "\n";
-		}
-		((SAINReportEditable) view).setNeededArea(tempCourses);
-		s.resetCourses();
 	}
 
 	/**
@@ -604,84 +498,6 @@ public class Controller implements Observer {
 			view = new LoginScreenView(view.getStage());
 			break;
 		}
-	}
-
-	/**
-	 * When an Editable SAIN Report has been generated when the confirm changes
-	 * button is pressed, the student being viewed will have its values changed
-	 * based on what is now in the text areas.
-	 * 
-	 * @precondition Data was entered correctly and Database was accessible
-	 * @postcondition Editable SAIN Report page will update and the student
-	 *                being viewed will permanently contain the new values
-	 *                entered
-	 */
-	private void confirmChangesSequence() {
-		appendedStudent = new Student();
-		String[] str = ((SAINReportEditable) view).getName().split(" ");
-		appendedStudent.setfName(str[0]);
-		appendedStudent.setlName(str[1]);
-		appendedStudent.setMajor(new Major(((SAINReportEditable) view)
-				.getMajor(), model.getMajors()
-				.get(((SAINReportEditable) view).getMajor()).getNeeded()));
-		CourseBag cb = new CourseBag();
-
-		String[] courses = ((SAINReportEditable) view).getTakenArea().split(
-				"\n");
-
-		for (int i = 0; i < courses.length; i++) {
-			String[] temp = courses[i].split("\t");
-			cb.add(new Course(temp[0], temp[1]));
-		}
-		appendedStudent.setTaken(cb);
-		cb = new CourseBag();
-		courses = ((SAINReportEditable) view).getTakingArea().split("\n");
-
-		for (int i = 0; i < courses.length; i++) {
-			String[] temp = courses[i].split("\t");
-			cb.add(new Course(temp[0], temp[1]));
-		}
-		appendedStudent.setTaking(cb);
-
-		cb = new CourseBag();
-		courses = ((SAINReportEditable) view).getOtherArea().split("\n");
-
-		for (int i = 0; i < courses.length; i++) {
-			String[] temp = courses[i].split("\t");
-			cb.add(new Course(temp[0], temp[1]));
-		}
-		appendedStudent.setOther(cb);
-
-		cb = new CourseBag();
-		courses = ((SAINReportEditable) view).getFailedArea().split("\n");
-
-		for (int i = 0; i < courses.length; i++) {
-			String[] temp = courses[i].split("\t");
-			cb.add(new Course(temp[0], temp[1]));
-		}
-		appendedStudent.setFailed(cb);
-
-		cb = new CourseBag();
-		courses = ((SAINReportEditable) view).getNeededArea().split("\n");
-
-		for (int i = 0; i < courses.length; i++) {
-			String[] temp = courses[i].split("\t");
-			cb.add(new Course(temp[0], ""));
-		}
-		appendedStudent.setNeeded(cb);
-		appendedStudent.setId(((SAINReportEditable) view).getId());
-		appendedStudent.setUsername(model.getPersons().getStudentBag()
-				.get(((SAINReportEditable) view).getId()).getUsername());
-		appendedStudent.setPassword(model.getPersons().getStudentBag()
-				.get(((SAINReportEditable) view).getId()).getPassword());
-		appendedStudent.calculateGPA();
-		model.delete(((SAINReportEditable) view).getId());
-		model.saveData();
-		model.addStudent(appendedStudent);
-
-		model.saveData();
-		((SAINReportEditable) view).removeItems();
-		generateSainEditable(appendedStudent);
 	}
 
 	/**

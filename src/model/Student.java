@@ -120,6 +120,16 @@ public class Student extends Person implements Serializable {
 				break;
 			}
 		}
+		
+		for (int i = 0; i < failed.size(); i++) {
+			switch (failed.get(i).getGrade()) {
+			case "W":
+				size--;
+				break;
+			default:
+				break;
+			}
+		}
 		double calcGpa = avg / size;
 		return df.format(calcGpa);
 	}
@@ -264,53 +274,71 @@ public class Student extends Person implements Serializable {
 			}
 		}
 	}
-	
-	public int addCourse(Course c) {
-		if(failed.containsByName(c) && needed.containsByName(c)) {
-			return 0;
+
+	/**
+	 * Adds a course and places it in the correct CourseBag.
+	 * 
+	 * @param c
+	 * @precondition Course is valid
+	 * @postcondition Course is added to the correct place
+	 */
+	public void addCourse(Course c) {
+		if (failed.contains(c) && needed.containsByName(c)) {
+			return;
 		}
-		if(hasCourse(c) && !((c.getGrade().equals("F")) || (c.getGrade().equals("W")))) {
-			//compare grades to replace possibly
-			return 0;
+		if ((taken.containsByName(c) || other.containsByName(c))
+				&& !((c.getGrade().equals("F")) || (c.getGrade().equals("W")))) {
+			return;
+		} else if(taking.containsByName(c)) {
+			taking.remove(new Course(c.getName(), "IP"));
 		}
-		if(((c.getGrade().equals("F")) || (c.getGrade().equals("W"))) && !(failed.containsByName(c))) {
+		if (((c.getGrade().equals("F")) || (c.getGrade().equals("W")))
+				&& !(failed.containsByName(c))) {
 			failed.add(c);
-			return 1;
-		} else if((major.getNeeded().containsByName(c)) && !(c.getGrade().equals("IP"))) {
+			return;
+		} else if ((major.getNeeded().containsByName(c))
+				&& !(c.getGrade().equals("IP"))) {
 			taken.add(c);
-			if(needed.containsByName(c)) {
+			if (needed.containsByName(c)) {
 				needed.remove(c);
 			}
-			return 2;
-		} else if(c.getGrade().equals("IP")) {
+			return;
+		} else if (c.getGrade().equals("IP")) {
 			taking.add(c);
-			if(needed.containsByName(c)) {
+			if (needed.containsByName(c)) {
 				needed.remove(c);
 			}
-			return 3;
-		} else if(!(major.getNeeded().contains(c))) {
+			return;
+		} else if (!(major.getNeeded().contains(c))) {
 			other.add(c);
-			if(needed.containsByName(c)) {
+			if (needed.containsByName(c)) {
 				needed.remove(c);
 			}
-			return 4;
+			return;
 		} else {
-			
+
 		}
-		return -1;
+		resetCourses();
 	}
-	
+
+	/**
+	 * Course with specific grade is removed from wherever it is located.
+	 * 
+	 * @param c
+	 * @precondition Student has that course
+	 * @postcondition Course is deleted from Student
+	 */
 	public void delete(Course c) {
-		if(taken.contains(c)) {
+		if (taken.contains(c)) {
 			taken.remove(c);
-		} else if(taking.contains(c)) {
+		} else if (taking.contains(c)) {
 			taking.remove(c);
-		} else if(other.contains(c)) {
+		} else if (other.contains(c)) {
 			other.remove(c);
-		} else if(failed.contains(c)) {
+		} else if (failed.contains(c)) {
 			failed.remove(c);
 		} else {
-			
+
 		}
 		resetCourses();
 	}

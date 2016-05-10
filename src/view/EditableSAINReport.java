@@ -97,7 +97,7 @@ public class EditableSAINReport extends View {
 		VBox l2 = new VBox();
 		l2.getChildren().addAll(takingL, takingList);
 		l2.setAlignment(Pos.CENTER);
-		
+
 		Label otherL = new Label("Other Courses Taken:");
 		otherList = new ListView<String>();
 		VBox l3 = new VBox();
@@ -136,7 +136,7 @@ public class EditableSAINReport extends View {
 		});
 		remove.setOnAction(e -> {
 			removeButtonStage();
-			
+
 		});
 		editCourse.setOnAction(e -> {
 			removeButtonStage();
@@ -157,7 +157,7 @@ public class EditableSAINReport extends View {
 		stage.show();
 
 	}
-	
+
 	/**
 	 * Set the values of the takenList ListView
 	 * 
@@ -257,7 +257,7 @@ public class EditableSAINReport extends View {
 		items = FXCollections.observableArrayList(tempCourses);
 		neededList.setItems(items);
 	}
-	
+
 	/**
 	 * Set the values of the coursesList ListView
 	 * 
@@ -315,7 +315,7 @@ public class EditableSAINReport extends View {
 	public String getMajor() {
 		return major.getValue();
 	}
-	
+
 	public String getPromptTextMajor() {
 		return major.getPromptText();
 	}
@@ -340,47 +340,58 @@ public class EditableSAINReport extends View {
 		return failedList.getItems();
 	}
 
+	/**
+	 * Opens the add button stage which allows the user to input any class name
+	 * and select the grade they desire.
+	 */
 	public void addButtonStage() {
 		Stage newStage = new Stage();
 		newStage.setTitle("Add Course");
 		Label newCourseL = new Label("Enter Course:");
 		newCourseField = new TextField("e.g. CST141");
-		
+
 		Label gradeL = new Label("Grade:");
 		gradeField1 = new ComboBox<String>();
-		gradeField1.getItems().addAll("A", "B+", "B", "C+", "C", "D+", "D", "F", "W", "IP");
-		
+		gradeField1.getItems().addAll("A", "B+", "B", "C+", "C", "D+", "D",
+				"F", "W", "IP");
+
 		GridPane gp = new GridPane();
 		GridPane.setConstraints(newCourseL, 0, 0);
 		GridPane.setConstraints(newCourseField, 1, 0);
 		GridPane.setConstraints(gradeL, 0, 1);
 		GridPane.setConstraints(gradeField1, 1, 1);
-		
+
 		Button addB = new Button("Add Course");
 		addB.setOnAction(e -> {
 			NotifyObserver(Events.ADD_COURSE);
 			newStage.close();
 		});
 		addB.setAlignment(Pos.CENTER);
-		
-		gp.getChildren().addAll(newCourseL, newCourseField, gradeL, gradeField1);
+
+		gp.getChildren()
+				.addAll(newCourseL, newCourseField, gradeL, gradeField1);
 		gp.setAlignment(Pos.CENTER);
-		
+
 		VBox localRoot = new VBox(10);
 		localRoot.setAlignment(Pos.CENTER);
 		localRoot.getChildren().addAll(gp, addB);
 		newStage.setScene(new Scene(localRoot, 500, 300));
 		newStage.show();
 	}
-	
+
 	public String getCourseA() {
 		return newCourseField.getText();
 	}
-	
+
 	public String getGrade() {
 		return gradeField1.getValue();
 	}
 
+	/**
+	 * Remove and Edit button stage generation where a listview of all the
+	 * students courses are created and the user may select one and either
+	 * delete it or change the grade.
+	 */
 	public void removeButtonStage() {
 		newStage2 = new Stage();
 		newStage2.setTitle("Modify Courses");
@@ -388,76 +399,85 @@ public class EditableSAINReport extends View {
 		Label selectLabel = new Label("Select Course: ");
 		coursesList = new ListView<String>();
 		coursesList.setMaxWidth(200);
-		
-		ObservableList<String> tempCourses = getTakingArea();
+
+		ObservableList<String> tempCourses = FXCollections.observableArrayList();
+		tempCourses.addAll(getTakingArea());
 		tempCourses.addAll(getTakenArea());
 		tempCourses.addAll(getOtherArea());
 		tempCourses.addAll(getFailedArea());
 		setCoursesList(tempCourses);
-		
+
 		items2 = FXCollections.observableArrayList(tempCourses);
 		coursesList.setItems(items2);
-		
+
 		Button edit = new Button("Edit");
 		edit.setOnAction(e -> {
 			editStage();
 		});
-		
+
 		Button delete = new Button("Delete");
 		delete.setOnAction(e -> {
 			NotifyObserver(Events.REMOVE_COURSE);
 			newStage2.close();
 		});
-		
+
 		HBox buttons = new HBox(10);
 		buttons.getChildren().addAll(edit, delete);
 		buttons.setAlignment(Pos.CENTER);
 		localRoot.getChildren().addAll(selectLabel, coursesList, buttons);
 		localRoot.setAlignment(Pos.CENTER);
-		
+
 		newStage2.setScene(new Scene(localRoot, 300, 400));
-		newStage2.show();		
+		newStage2.show();
 	}
-	
+
+	/**
+	 * Gets the data from what the user selected in the courses list
+	 * @return String holding course name + "\t" + grade
+	 */
 	public String getSelectedCoursesItem() {
 		return coursesList.getSelectionModel().getSelectedItem();
 	}
-	
+
+	/**
+	 * Edit stage generated that allows the user to change a grade of the course they selected
+	 */
 	public void editStage() {
 		Stage newStage = new Stage();
 		newStage.setTitle("Edit Selected Course");
 		String toEdit = getSelectedCoursesItem();
-		if(toEdit == null) {
-			
+		if (toEdit == null) {
+
 		} else {
 			String[] str = getSelectedCoursesItem().split("\t");
-			
+
 			cLabel = new Label(str[0]);
 			gradeField1 = new ComboBox<String>();
-			gradeField1.getItems().addAll("A", "B+", "B", "C+", "C", "D+", "D", "F", "W", "IP");
+			gradeField1.getItems().addAll("A", "B+", "B", "C+", "C", "D+", "D",
+					"F", "W", "IP");
 			gradeField1.setPromptText(str[1]);
 			HBox hb = new HBox(10);
 			hb.getChildren().addAll(cLabel, gradeField1);
 			hb.setAlignment(Pos.CENTER);
-			
+
 			Button editB = new Button("Confirm");
-			
+
 			editB.setOnAction(e -> {
 				NotifyObserver(Events.EDIT_COURSE);
 				newStage.close();
 				newStage2.close();
 			});
-			
+
 			VBox localRoot = new VBox(10);
+			localRoot.setStyle("-fx-alignment: center center");
 			localRoot.getChildren().addAll(hb, editB);
 			newStage.setScene(new Scene(localRoot, 300, 200));
 			newStage.show();
 		}
 	}
-	
+
 	public String getCLabel() {
 		return cLabel.getText();
 	}
-	
 
 }

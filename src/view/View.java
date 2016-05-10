@@ -38,7 +38,7 @@ public class View extends Scene implements Subject {
 	 * Checks if the view is the first to pop up when program starts. If it is
 	 * then resizable is false and the title is set.
 	 * 
-	 * @precondtion first = true
+	 * @precondition first = true
 	 * @postcondition stage is shown
 	 */
 	protected void init() {
