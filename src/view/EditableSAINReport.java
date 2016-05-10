@@ -44,6 +44,7 @@ public class EditableSAINReport extends View {
 	public EditableSAINReport(Stage stage) {
 		super(stage, new VBox(10), GlobalVariables.width,
 				GlobalVariables.height * 2);
+		stage.getModality();
 		obsArr = new ArrayList<>();
 		VBox vb = (VBox) getRoot();
 		vb.setStyle("-fx-alignment: center center");
@@ -394,6 +395,7 @@ public class EditableSAINReport extends View {
 	 */
 	public void removeButtonStage() {
 		newStage2 = new Stage();
+		newStage2.getModality();
 		newStage2.setTitle("Modify Courses");
 		VBox localRoot = new VBox(10);
 		Label selectLabel = new Label("Select Course: ");
@@ -444,6 +446,7 @@ public class EditableSAINReport extends View {
 	 */
 	public void editStage() {
 		Stage newStage = new Stage();
+		newStage.getModality();
 		newStage.setTitle("Edit Selected Course");
 		String toEdit = getSelectedCoursesItem();
 		if (toEdit == null) {

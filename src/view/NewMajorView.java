@@ -36,6 +36,7 @@ public class NewMajorView extends View {
 		Label majorLabel = new Label("Select Desired Major (View Only)");
 		majors = new ComboBox<>();
 		Button submit = new Button("Submit");
+		submit.setDefaultButton(true);
 
 		submit.setOnAction(e -> {
 			NotifyObserver(Events.DO_WHAT_IF);

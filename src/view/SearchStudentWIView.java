@@ -47,6 +47,8 @@ public class SearchStudentWIView extends View {
 		submit.setOnAction(e -> {
 			NotifyObserver(Events.DO_WHAT_IF);
 		});
+		
+		submit.setDefaultButton(true);
 
 		Button back = new Button("Back to Home Screen");
 		back.setOnAction(e -> {

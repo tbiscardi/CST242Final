@@ -41,6 +41,7 @@ public class FindStudentView extends View {
 		idField = new TextField("Enter ID here");
 		idField.setMaxWidth(200);
 		Button search = new Button("Generate SAIN Report");
+		search.setDefaultButton(true);
 		search.setOnAction(e -> {
 			NotifyObserver(Events.SEARCH_STUDENT_BUTTON);
 		});
