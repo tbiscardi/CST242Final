@@ -10,3 +10,13 @@ Faculty- (username, password):
   chue mathisfun;
 Admin- (username, password):
   admin hacker;
+
+
+Does not have MySQL;
+Does not have JUnitTest;
+Has Javadocs with webpages;
+Saves to binary file;
+Google coding style;
+GitHub version control;
+Executable JAR file;
+Has some UML, main one is Class Diagram;
