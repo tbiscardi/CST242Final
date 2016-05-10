@@ -226,10 +226,8 @@ public class Database {
 	 */
 	public void addStudent(Student s) {
 		if (s.getType() == 0) {
-			for(int i = 0; i < persons.getStudentBag().size(); i ++) {
-				if(!persons.getStudentBag().get(s.getId()).equals(null)) {
-					return;
-				}
+			if(!(persons.getStudentBag().get(s.getId()) == null)) {
+				return;
 			}
 			
 			if ((s.getId().equals(null))) {

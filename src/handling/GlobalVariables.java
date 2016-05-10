@@ -10,7 +10,17 @@ package handling;
 public class GlobalVariables {
 
 	public enum Events {
-		LOG_IN_BUTTON, SAIN_REPORT_BUTTON, WHAT_IF_BUTTON, SEARCH_STUDENT_BUTTON, CONFIRM_CHANGES, DO_WHAT_IF, BACK_BUTTON
+		LOG_IN_BUTTON, 
+		SAIN_REPORT_BUTTON, 
+		WHAT_IF_BUTTON, 
+		SEARCH_STUDENT_BUTTON, 
+		CHANGE_MAJOR, 
+		/*CONFIRM_CHANGES,*/ 
+		DO_WHAT_IF, 
+		BACK_BUTTON, 
+		ADD_COURSE, 
+		REMOVE_COURSE, 
+		EDIT_COURSE
 	}
 
 	public static final int width = 600, height = 400;

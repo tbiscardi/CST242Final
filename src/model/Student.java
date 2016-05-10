@@ -264,5 +264,55 @@ public class Student extends Person implements Serializable {
 			}
 		}
 	}
+	
+	public int addCourse(Course c) {
+		if(failed.containsByName(c) && needed.containsByName(c)) {
+			return 0;
+		}
+		if(hasCourse(c) && !((c.getGrade().equals("F")) || (c.getGrade().equals("W")))) {
+			//compare grades to replace possibly
+			return 0;
+		}
+		if(((c.getGrade().equals("F")) || (c.getGrade().equals("W"))) && !(failed.containsByName(c))) {
+			failed.add(c);
+			return 1;
+		} else if((major.getNeeded().containsByName(c)) && !(c.getGrade().equals("IP"))) {
+			taken.add(c);
+			if(needed.containsByName(c)) {
+				needed.remove(c);
+			}
+			return 2;
+		} else if(c.getGrade().equals("IP")) {
+			taking.add(c);
+			if(needed.containsByName(c)) {
+				needed.remove(c);
+			}
+			return 3;
+		} else if(!(major.getNeeded().contains(c))) {
+			other.add(c);
+			if(needed.containsByName(c)) {
+				needed.remove(c);
+			}
+			return 4;
+		} else {
+			
+		}
+		return -1;
+	}
+	
+	public void delete(Course c) {
+		if(taken.contains(c)) {
+			taken.remove(c);
+		} else if(taking.contains(c)) {
+			taking.remove(c);
+		} else if(other.contains(c)) {
+			other.remove(c);
+		} else if(failed.contains(c)) {
+			failed.remove(c);
+		} else {
+			
+		}
+		resetCourses();
+	}
 
 }

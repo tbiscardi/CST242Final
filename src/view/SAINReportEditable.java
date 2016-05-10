@@ -112,9 +112,9 @@ public class SAINReportEditable extends View {
 
 		Button confirm = new Button("Confirm Changes");
 
-		confirm.setOnAction(e -> {
-			NotifyObserver(Events.CONFIRM_CHANGES);
-		});
+//		confirm.setOnAction(e -> {
+//			NotifyObserver(Events.CONFIRM_CHANGES);
+//		});
 		
 		Button back = new Button("Return");
 		back.setOnAction(e -> {

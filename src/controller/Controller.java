@@ -5,12 +5,14 @@ import handling.Observer;
 
 import java.util.ArrayList;
 
+import javafx.collections.ObservableList;
 import model.Course;
 import model.CourseBag;
 import model.Database;
 import model.Major;
 import model.Person;
 import model.Student;
+import view.EditableSAINReport;
 import view.FindStudentView;
 import view.LoginScreenView;
 import view.MySAINHomeScreen;
@@ -92,16 +94,221 @@ public class Controller implements Observer {
 		case SEARCH_STUDENT_BUTTON:
 			searchStudentSequence();
 			break;
-		case CONFIRM_CHANGES:
-			confirmChangesSequence();
+		case CHANGE_MAJOR:
+			changeMajorSequence();
 			break;
 		case BACK_BUTTON:
 			backButtonSequence();
+			break;
+		case ADD_COURSE:
+			addCourseSeq();
+			break;
+		case REMOVE_COURSE:
+			removeCourseSequence();
+			break;
+		case EDIT_COURSE:
+			editCourseSequence();
 			break;
 		default:
 			break;
 		}
 
+	}
+
+	private void editCourseSequence() {
+		String toEdit = ((EditableSAINReport) view).getSelectedCoursesItem();
+		String course = ((EditableSAINReport) view).getCLabel();
+		String grade = ((EditableSAINReport) view).getGrade();
+		String[] edit = toEdit.split("\t");
+		Course newC = new Course(course, grade);
+		Course oldC = new Course(edit[0], edit[1]);
+		searched.delete(oldC);
+		searched.addCourse(newC);
+		model.saveData();
+		generateEditableSAINReport(searched);
+	}
+
+	private void removeCourseSequence() {
+		String toDelete = ((EditableSAINReport) view).getSelectedCoursesItem();
+		if(toDelete == null) {
+			
+		} else {
+			String[] str = toDelete.split("\t");
+			Course c = new Course(str[0], str[1]);
+			searched.delete(c);
+		}
+		model.saveData();
+		
+		generateEditableSAINReport(searched);
+	}
+
+	private void changeMajorSequence() {
+		try {
+			if (((EditableSAINReport) view).getMajor().equals(
+					searched.getMajor().getName())) {
+
+			} else {
+				searched.setMajor(model.getMajors().get(
+						((EditableSAINReport) view).getMajor()));
+				model.saveData();
+				generateEditableSAINReport(searched);
+			}
+		} catch (NullPointerException e) {
+
+		}
+
+	}
+
+	private void addCourseSeq() {
+		if (((EditableSAINReport) view).getCourseA() == null
+				|| ((EditableSAINReport) view).getGrade() == null
+				|| ((EditableSAINReport) view).getCourseA().equals(
+						"e.g. CST141")) {
+
+		} else {
+			Course newCourse = new Course(
+					((EditableSAINReport) view).getCourseA(),
+					((EditableSAINReport) view).getGrade());
+			searched.addCourse(newCourse);
+			model.saveData();
+			generateEditableSAINReport(searched);
+		}
+	}
+
+	// private void addCourseSequence() {
+	// String[] str = ((EditableSAINReport) view).getName().split(" ");
+	// appendedStudent.setfName(str[0]);
+	// appendedStudent.setlName(str[1]);
+	// appendedStudent.setId(((EditableSAINReport) view).getId());
+	//
+	// Course newCourse = new Course(((EditableSAINReport) view).getCourseA(),
+	// ((EditableSAINReport) view).getGrade());
+	// appendedStudent.addCourse(newCourse);
+	//
+	// for (int i = 0; i < model.getMajors().size(); i++) {
+	// ((EditableSAINReport) view).addMajors(model.getMajors().get(i)
+	// .getName());
+	// }
+	// ((EditableSAINReport)
+	// view).setMajor(appendedStudent.getMajor().getName());
+	//
+	// //Adds taken courses
+	// ObservableList<String> tempCourses = ((EditableSAINReport)
+	// view).getTakenArea();
+	// for(int i = 0; i < tempCourses.size(); i ++) {
+	// String[] course = tempCourses.get(i).split("\t");
+	// appendedStudent.addCourse(new Course(course[0], course[1]));
+	// }
+	// ((EditableSAINReport) view).setTakenCoursesList(tempCourses);
+	//
+	//
+	// //Adds taking courses
+	// tempCourses = ((EditableSAINReport) view).getTakingArea();
+	// for(int i = 0; i < tempCourses.size(); i ++) {
+	// String[] course = tempCourses.get(i).split("\t");
+	// appendedStudent.addCourse(new Course(course[0], course[1]));
+	// }
+	// ((EditableSAINReport) view).setTakingCoursesList(tempCourses);
+	//
+	// //Adds other courses
+	// tempCourses = ((EditableSAINReport) view).getOtherArea();
+	// for(int i = 0; i < tempCourses.size(); i ++) {
+	// String[] course = tempCourses.get(i).split("\t");
+	// appendedStudent.addCourse(new Course(course[0], course[1]));
+	// }
+	// ((EditableSAINReport) view).setOtherCoursesList(tempCourses);
+	//
+	// //Add failed courses
+	// tempCourses = ((EditableSAINReport) view).getFailedArea();
+	// for(int i = 0; i < tempCourses.size(); i ++) {
+	// String[] course = tempCourses.get(i).split("\t");
+	// appendedStudent.addCourse(new Course(course[0], course[1]));
+	// }
+	// ((EditableSAINReport) view).setFailedCoursesList(tempCourses);
+	//
+	// ArrayList<String> tempCourses2 = new ArrayList<String>();
+	// CourseBag n = appendedStudent.getNeeded();
+	// for(int i = 0; i < n.size(); i ++) {
+	// tempCourses2.add(n.get(i).getName() + "\t" + n.get(i).getGrade());
+	// }
+	// ((EditableSAINReport) view).setNeededCoursesList(tempCourses2);
+	//
+	// try {
+	// appendedStudent.setUsername(model.getPersons().getStudentBag()
+	// .get(((EditableSAINReport) view).getId()).getUsername());
+	// appendedStudent.setPassword(model.getPersons().getStudentBag()
+	// .get(((EditableSAINReport) view).getId()).getPassword());
+	// } catch (Exception e) {
+	// appendedStudent.setUsername(searched.getUsername());
+	// appendedStudent.setPassword(searched.getPassword());
+	// }
+	// appendedStudent.calculateGPA();
+	// model.delete(((EditableSAINReport) view).getId());
+	// model.saveData();
+	// model.addStudent(appendedStudent);
+	//
+	// model.saveData();
+	// ((EditableSAINReport) view).removeItems();
+	// generateEditableSAINReport(appendedStudent);
+	// }
+
+	private void generateEditableSAINReport(Student s) {
+		((EditableSAINReport) view).setName(s.getfName() + " " + s.getlName());
+		((EditableSAINReport) view).setId(s.getId());
+		((EditableSAINReport) view).setGpa(s.calculateGPA());
+		((EditableSAINReport) view).setMajor(s.getMajor().getName());
+		s.resetCourses();
+
+		((EditableSAINReport) view).setMajor(s.getMajor().getName());
+
+		((EditableSAINReport) view).removeItems();
+
+		for (int i = 0; i < model.getMajors().size(); i++) {
+			((EditableSAINReport) view).addMajors(model.getMajors().get(i)
+					.getName());
+		}
+
+		ArrayList<String> tempCourses = new ArrayList<>();
+		for (int i = 0; i < s.getTaken().size(); i++) {
+			tempCourses.add(s.getTaken().get(i).getName() + "\t"
+					+ s.getTaken().get(i).getGrade());
+		}
+		((EditableSAINReport) view).setTakenCoursesList(tempCourses);
+		tempCourses = null;
+		tempCourses = new ArrayList<>();
+
+		for (int i = 0; i < s.getTaking().size(); i++) {
+			tempCourses.add(s.getTaking().get(i).getName() + "\t"
+					+ s.getTaking().get(i).getGrade());
+		}
+		((EditableSAINReport) view).setTakingCoursesList(tempCourses);
+		tempCourses = null;
+		tempCourses = new ArrayList<>();
+
+		for (int i = 0; i < s.getOther().size(); i++) {
+			tempCourses.add(s.getOther().get(i).getName() + "\t"
+					+ s.getOther().get(i).getGrade());
+		}
+		((EditableSAINReport) view).setOtherCoursesList(tempCourses);
+		tempCourses = null;
+		tempCourses = new ArrayList<>();
+
+		for (int i = 0; i < s.getFailed().size(); i++) {
+			tempCourses.add(s.getFailed().get(i).getName() + "\t"
+					+ s.getFailed().get(i).getGrade());
+		}
+		((EditableSAINReport) view).setFailedCoursesList(tempCourses);
+		tempCourses = null;
+		tempCourses = new ArrayList<>();
+
+		for (int i = 0; i < s.getNeeded().size(); i++) {
+			tempCourses.add(s.getNeeded().get(i).getName() + "\t"
+					+ s.getNeeded().get(i).getGrade());
+		}
+		((EditableSAINReport) view).setNeededCoursesList(tempCourses);
+		appendedStudent = new Student();
+		appendedStudent.setfName("");
+		appendedStudent.setMajor(s.getMajor());
 	}
 
 	/**
@@ -387,8 +594,8 @@ public class Controller implements Observer {
 			if (searched == null) {
 				view = new FindStudentView(view.getStage());
 			} else {
-				view = new SAINReportEditable(view.getStage());
-				generateSainEditable(searched);
+				view = new EditableSAINReport(view.getStage());
+				generateEditableSAINReport(searched);
 
 			}
 			view.addObserver(this);

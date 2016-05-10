@@ -15,6 +15,10 @@ public class CourseBag implements Serializable {
 	public CourseBag() {
 		courses = new ArrayList<>();
 	}
+	
+	public void set(ArrayList<Course> courses) {
+		this.courses = courses;
+	}
 
 	/**
 	 * Adds a course to courses ArrayList
